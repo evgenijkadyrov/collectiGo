@@ -12,7 +12,7 @@ export default defineConfig({
     setupFiles: "src/setupTests.ts",
   },
   build: {
-    chunkSizeWarningLimit: 1600
+    chunkSizeWarningLimit: 1600,
   },
   resolve: {
     alias: {

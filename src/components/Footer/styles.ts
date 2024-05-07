@@ -20,4 +20,3 @@ export const Container = styled.div`
     width: 85%;
   }
 `
-

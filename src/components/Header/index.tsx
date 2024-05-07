@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { CloseIcon } from '@/assets/icons/CloseIcon'
-import { LogoIcon} from '@/assets/icons/LogoItem'
+import { LogoIcon } from '@/assets/icons/LogoItem'
 import { BurgerMenu } from '@/common/BurgerMenu'
 import { colors } from '@/constants/colors'
 
@@ -36,7 +36,6 @@ export const Header = () => {
               <StyledBurgerLink to={'/'} color={colors.primary}>
                 Home
               </StyledBurgerLink>
-
             </WrapperLink>
           </BurgerMenu>
 
@@ -51,7 +50,6 @@ export const Header = () => {
           <StyledLink to={'/'} color={colors.white}>
             Home
           </StyledLink>
-
         </Navigation>
       </Container>
     </StyledHeader>
