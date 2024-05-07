@@ -1,5 +1,4 @@
 import { TitleGallery } from '@/common/TitleForGallery'
-import { TitlePage } from '@/common/TitlePage'
 import { Layout } from '@/common/Layout/Layout'
 import { Content, Wrapper } from './styles'
 import { useParams } from 'react-router-dom'
@@ -14,7 +13,6 @@ export const Item = () => {
     <Layout>
       <Wrapper>
         <Content>
-          <TitlePage firstLine={'Item Collection'} isColored={true} />
           <TitleGallery firstLineText={'Item'} />
           {item && (
             <Card title={item.title} bordered={false}>

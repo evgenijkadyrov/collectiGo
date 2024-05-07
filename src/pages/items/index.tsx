@@ -4,6 +4,7 @@ import { Layout } from '@/common/Layout/Layout'
 import { Content, StyledContent, Wrapper } from '@/pages/items/styles'
 import { ArtDataItem, items } from '@/data/data'
 import { useNavigate } from 'react-router-dom'
+import { TitleGallery } from '@/common/TitleForGallery'
 type IdParams = {
   collectionId: string
 }
@@ -25,6 +26,7 @@ export const Items = () => {
       <Content>
         <Wrapper>
           <StyledContent>
+            <TitleGallery firstLineText={'Collection'} />
             <Table dataSource={data} onRow={handleRowClick}>
               <Column title="Title" dataIndex="title" key="title" />
               <Column title="Author" dataIndex="author" key="author" />
