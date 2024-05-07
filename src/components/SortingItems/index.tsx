@@ -1,4 +1,4 @@
-import {SelectComponent} from '@components/SortingItems/SelectComponent'
+//import {SelectComponent} from '@components/SortingItems/SelectComponent'
 //import {memo} from 'react'
 
 
