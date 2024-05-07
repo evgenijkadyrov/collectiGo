@@ -13,12 +13,10 @@ const router = createBrowserRouter([
   {
     path: '/:collectionId',
     element: <Items />,
-    children: [
-      {
-        path: '/:collectionId/items/:itemId',
-        element: <Item />,
-      },
-    ],
+  },
+  {
+    path: '/:collectionId/items/:itemId',
+    element: <Item />,
   },
 ])
 ReactDOM.createRoot(document.getElementById('root')!).render(

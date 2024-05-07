@@ -2,22 +2,30 @@ import { useParams } from 'react-router-dom'
 import { Space, Table, Tag } from 'antd'
 import { Layout } from '@/common/Layout/Layout'
 import { Content, StyledContent, Wrapper } from '@/pages/items/styles'
-import { items } from '@/data/data'
-
+import { ArtDataItem, items } from '@/data/data'
+import { useNavigate } from 'react-router-dom'
 type IdParams = {
   collectionId: string
 }
 const { Column } = Table
 export const Items = () => {
   const { collectionId } = useParams<IdParams>()
+  const navigate = useNavigate()
   const data = items.filter((item) => item.collection_id === collectionId)
-  console.log(data)
+
+  const handleRowClick = (record: ArtDataItem) => {
+    return {
+      onClick: () => {
+        navigate(`items/${record.item_id}`)
+      },
+    }
+  }
   return (
     <Layout>
       <Content>
         <Wrapper>
           <StyledContent>
-            <Table dataSource={data}>
+            <Table dataSource={data} onRow={handleRowClick}>
               <Column title="Title" dataIndex="title" key="title" />
               <Column title="Author" dataIndex="author" key="author" />
               <Column title="Year" dataIndex="year" key="year" />

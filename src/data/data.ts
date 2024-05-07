@@ -8,7 +8,7 @@ export interface ArtCollection {
 }
 
 export interface ArtDataItem {
-  items_id: string
+  item_id: string
   collection_id: string
   title: string
   tags: string[]
@@ -34,7 +34,7 @@ export const collections: ArtCollection[] = [
 
 export const items: ArtDataItem[] = [
   {
-    items_id: '1',
+    item_id: '1',
     collection_id: '1',
     title: 'Sunset Serenade',
     tags: ['nature', 'landscape', 'sunset'],
@@ -43,7 +43,7 @@ export const items: ArtDataItem[] = [
     year: 2023,
   },
   {
-    items_id: '2',
+    item_id: '2',
     collection_id: '1',
     title: 'Floral Symphony',
     tags: ['nature', 'flowers', 'colorful'],
@@ -52,16 +52,17 @@ export const items: ArtDataItem[] = [
     year: 2022,
   },
   {
-    items_id: '3',
+    item_id: '3',
     collection_id: '1',
     title: 'Enchanted Forest',
     tags: ['nature', 'trees', 'mystical'],
     author: 'Sophia Adams',
     content: 'Ink on paper',
+
     year: 2021,
   },
   {
-    items_id: '4',
+    item_id: '4',
     collection_id: '1',
     title: 'Coastal Breeze',
     tags: ['nature', 'seascape', 'waves'],
@@ -70,7 +71,7 @@ export const items: ArtDataItem[] = [
     year: 2019,
   },
   {
-    items_id: ' 5',
+    item_id: ' 5',
     collection_id: '1',
     title: 'Mountain Majesty',
     tags: ['nature', 'mountains', 'scenic'],
@@ -79,8 +80,8 @@ export const items: ArtDataItem[] = [
     year: 2020,
   },
   {
-    items_id: '1',
-    collection_id: ' 2',
+    item_id: '1',
+    collection_id: '2',
     title: 'Untitled',
     tags: ['abstract', 'shapes', 'lines'],
     author: 'John Smith',
@@ -88,7 +89,7 @@ export const items: ArtDataItem[] = [
     year: 2020,
   },
   {
-    items_id: '2',
+    item_id: '2',
     collection_id: '2',
     title: 'Exploration',
     tags: ['geometric', 'colorful', 'patterns'],
@@ -97,8 +98,8 @@ export const items: ArtDataItem[] = [
     year: 2019,
   },
   {
-    items_id: ' 3',
-    collection_id: ' 2',
+    item_id: ' 3',
+    collection_id: '2',
     title: 'Transcendence',
     tags: ['organic', 'fluid', 'movement'],
     author: 'Sarah Thompson',
@@ -106,7 +107,7 @@ export const items: ArtDataItem[] = [
     year: 2021,
   },
   {
-    items_id: '4',
+    item_id: '4',
     collection_id: '2',
     title: 'Symphony in Blue',
     tags: ['abstract', 'expressionism', 'blue'],
@@ -115,7 +116,7 @@ export const items: ArtDataItem[] = [
     year: 2018,
   },
   {
-    items_id: '5',
+    item_id: '5',
     collection_id: '2',
     title: 'Harmony',
     tags: ['balance', 'serenity', 'pastel'],
