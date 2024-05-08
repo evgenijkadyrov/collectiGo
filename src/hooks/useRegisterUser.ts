@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { registerUser } from '@/api/auth'
 import { useActions } from '@/hooks/useActions'
 import { authThunk } from '@/app/auth-reducer'
 

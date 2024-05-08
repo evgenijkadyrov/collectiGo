@@ -12,7 +12,7 @@ const { Column } = Table
 export const Items = () => {
   const { collectionId } = useParams<IdParams>()
   const navigate = useNavigate()
-  const data = items.filter((item) => item.collection_id === collectionId)
+  const data = items.filter((item) => item._id === collectionId)
 
   const handleRowClick = (record: ArtDataItem) => {
     return {

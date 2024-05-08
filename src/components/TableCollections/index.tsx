@@ -1,14 +1,19 @@
 import { Space, Table } from 'antd'
-import { ArtCollection, collections } from '@/data/data'
+import { ArtCollection } from '@/data/data'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { RootStateType } from '@/app/store'
+
 const { Column } = Table
 
 export const TableCollections = () => {
   const navigate = useNavigate()
+  const collections = useSelector<RootStateType, ArtCollection[]>((state) => state.collections)
+  console.log('col', collections)
   const handleRowClick = (record: ArtCollection) => {
     return {
       onClick: () => {
-        navigate(`${record.collection_id}`)
+        navigate(`${record._id}`)
       },
     }
   }

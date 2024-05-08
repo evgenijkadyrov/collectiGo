@@ -1,7 +1,7 @@
 export type Category = 'Prints and Drawing' | 'Drawing' | 'Paper' | 'Collage'
 
 export interface ArtCollection {
-  collection_id: string
+  _id: string
   title: string
   category: Category
   picture: string
@@ -9,7 +9,8 @@ export interface ArtCollection {
 
 export interface ArtDataItem {
   item_id: string
-  collection_id: string
+
+  _id: string
   title: string
   tags: string[]
   author?: string
@@ -19,13 +20,13 @@ export interface ArtDataItem {
 
 export const collections: ArtCollection[] = [
   {
-    collection_id: '1',
+    _id: '1',
     title: 'Abstract Forms',
     category: 'Prints and Drawing',
     picture: 'abstract1.jpg',
   },
   {
-    collection_id: '2',
+    _id: '2',
     title: "Nature's Beauty",
     category: 'Drawing',
     picture: 'nature1.jpg',
@@ -35,7 +36,8 @@ export const collections: ArtCollection[] = [
 export const items: ArtDataItem[] = [
   {
     item_id: '1',
-    collection_id: '1',
+
+    _id: '1',
     title: 'Sunset Serenade',
     tags: ['nature', 'landscape', 'sunset'],
     author: 'Emma Wilson',
@@ -44,7 +46,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: '2',
-    collection_id: '1',
+
+    _id: '1',
     title: 'Floral Symphony',
     tags: ['nature', 'flowers', 'colorful'],
     author: 'David Thompson',
@@ -53,7 +56,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: '3',
-    collection_id: '1',
+
+    _id: '1',
     title: 'Enchanted Forest',
     tags: ['nature', 'trees', 'mystical'],
     author: 'Sophia Adams',
@@ -63,7 +67,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: '4',
-    collection_id: '1',
+
+    _id: '1',
     title: 'Coastal Breeze',
     tags: ['nature', 'seascape', 'waves'],
     author: 'Ryan Miller',
@@ -72,7 +77,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: ' 5',
-    collection_id: '1',
+
+    _id: '1',
     title: 'Mountain Majesty',
     tags: ['nature', 'mountains', 'scenic'],
     author: 'Ethan Davis',
@@ -81,7 +87,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: '1',
-    collection_id: '2',
+
+    _id: '2',
     title: 'Untitled',
     tags: ['abstract', 'shapes', 'lines'],
     author: 'John Smith',
@@ -90,7 +97,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: '2',
-    collection_id: '2',
+
+    _id: '2',
     title: 'Exploration',
     tags: ['geometric', 'colorful', 'patterns'],
     author: 'Emily Johnson',
@@ -99,7 +107,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: ' 3',
-    collection_id: '2',
+
+    _id: '2',
     title: 'Transcendence',
     tags: ['organic', 'fluid', 'movement'],
     author: 'Sarah Thompson',
@@ -108,7 +117,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: '4',
-    collection_id: '2',
+
+    _id: '2',
     title: 'Symphony in Blue',
     tags: ['abstract', 'expressionism', 'blue'],
     author: 'Michael Anderson',
@@ -117,7 +127,8 @@ export const items: ArtDataItem[] = [
   },
   {
     item_id: '5',
-    collection_id: '2',
+
+    _id: '2',
     title: 'Harmony',
     tags: ['balance', 'serenity', 'pastel'],
     author: 'Olivia Davis',
