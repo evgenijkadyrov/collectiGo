@@ -8,19 +8,34 @@ import { TableCollections } from '@components/TableCollections'
 import { useEffect } from 'react'
 import { useActions } from '@/hooks/useActions'
 import { collectionsThunk } from '@/app/collections-reducer'
+import { ButtonCustom } from '@components/ButtonCustom'
+import { ArtCollection } from '@/data/data'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
 
 export const Content = () => {
-  const { fetchCollections } = useActions(collectionsThunk)
+  const { fetchCollections, createCollections } = useActions(collectionsThunk)
+  const token = useSelector<RootState, string>((state) => state.auth.token)
+  const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn)
   useEffect(() => {
     fetchCollections({})
   }, [])
-
+  const handleCreateCollection = () => {
+    const data: ArtCollection = {
+      title: 'new Collection',
+      category: 'Collage',
+      picture: 'http://picture.ru/picrure',
+    }
+    createCollections({ data, token })
+  }
   return (
     <Wrapper>
       <StyledContent>
         <TitlePage firstLine={'Your favorite collections '} isActive={true} />
         <SearchArtworkForm setSearchValue={() => {}} />
         <TitleGallery firstLineText={'Last added collection'} />
+        {isLoggedIn && <ButtonCustom onClick={handleCreateCollection}>Create</ButtonCustom>}
+
         <TableCollections />
         <TitleGallery
           firstLineText={'Biggest collections'}

@@ -1,11 +1,12 @@
 export type Category = 'Prints and Drawing' | 'Drawing' | 'Paper' | 'Collage'
 
-export interface ArtCollection {
+export interface ArtCollectionResponse {
   _id: string
   title: string
   category: Category
   picture: string
 }
+export interface ArtCollection extends Omit<ArtCollectionResponse, '_id'> {}
 
 export interface ArtDataItem {
   item_id: string
@@ -18,7 +19,7 @@ export interface ArtDataItem {
   year?: number
 }
 
-export const collections: ArtCollection[] = [
+export const collections: ArtCollectionResponse[] = [
   {
     _id: '1',
     title: 'Abstract Forms',
