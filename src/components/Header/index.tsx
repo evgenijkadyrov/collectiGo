@@ -6,24 +6,32 @@ import { BurgerMenu } from '@/common/BurgerMenu'
 import { colors } from '@/constants/colors'
 
 import {
+  AppName,
   CloseIconContainer,
   Container,
   Logo,
   LogoContainer,
-  AppName,
   Navigation,
   StyledBurgerLink,
   StyledHeader,
   StyledLink,
   WrapperLink,
 } from './styles'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
+import { authThunk } from '@/app/auth-reducer'
+import { useActions } from '@/hooks/useActions'
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const onClose = () => {
     setIsOpen(false)
   }
-
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
+  const { logout } = useActions(authThunk)
+  const handleLogout = () => {
+    logout({})
+  }
   return (
     <StyledHeader>
       <Container>
@@ -50,6 +58,11 @@ export const Header = () => {
           <StyledLink to={'/'} color={colors.white}>
             Home
           </StyledLink>
+          {isLoggedIn && (
+            <StyledLink to={'/'} color={colors.white} onClick={handleLogout}>
+              Logout
+            </StyledLink>
+          )}
         </Navigation>
       </Container>
     </StyledHeader>
