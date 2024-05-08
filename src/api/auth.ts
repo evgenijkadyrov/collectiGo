@@ -1,10 +1,6 @@
-import axios, { AxiosInstance } from 'axios'
-//import {LoginResponse} from "@/hooks/useLoginUser";
 import { DataRegisterType } from '@/hooks/useRegisterUser'
+import { instance } from '@/api/api'
 
-export const instance: AxiosInstance = axios.create({
-  baseURL: 'https://collecti-go-server.vercel.app',
-})
 export interface UserDataType {
   email: string
   password: string
@@ -24,25 +20,6 @@ export const registerUser = async (userData: DataRegisterType): Promise<void> =>
     await instance.post('/auth/register', userData)
   } catch (error: any) {
     throw new Error(`Error register user: ${error.response.data.message}`)
-  }
-}
-
-// export const login = async (userData: UserDataType): Promise<LoginResponse> => {
-//   try {
-//     const res = await instance.post("/auth/login", userData);
-//     return res.data;
-//   } catch (error:any) {
-//     console.log('error',error)
-//     throw new Error(`Error login user: ${error.response.data.message}`);
-//   }
-// };
-
-export const logoutUser = (): void => {
-  try {
-    localStorage.removeItem('token')
-    localStorage.removeItem('name')
-  } catch (error: any) {
-    throw new Error(`Error logout user: ${error.message}`)
   }
 }
 

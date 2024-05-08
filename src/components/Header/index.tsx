@@ -21,6 +21,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { authThunk } from '@/app/auth-reducer'
 import { useActions } from '@/hooks/useActions'
+import { Paths } from '@/Paths'
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -32,6 +33,7 @@ export const Header = () => {
   const handleLogout = () => {
     logout({})
   }
+
   return (
     <StyledHeader>
       <Container>
@@ -62,6 +64,17 @@ export const Header = () => {
             <StyledLink to={'/'} color={colors.white} onClick={handleLogout}>
               Logout
             </StyledLink>
+          )}
+          {!isLoggedIn && (
+            <>
+              {' '}
+              <StyledLink to={Paths.register} color={colors.white}>
+                Registration
+              </StyledLink>
+              <StyledLink to={Paths.login} color={colors.white}>
+                Login
+              </StyledLink>
+            </>
           )}
         </Navigation>
       </Container>

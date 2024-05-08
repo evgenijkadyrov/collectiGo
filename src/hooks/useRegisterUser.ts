@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { registerUser } from '@/api/auth'
+import { useActions } from '@/hooks/useActions'
+import { authThunk } from '@/app/auth-reducer'
 
 export interface DataRegisterType {
   name: string
@@ -11,10 +13,11 @@ export interface DataRegisterType {
 export const useRegisterUser = () => {
   const [error, setError] = useState<string>()
   const navigate = useNavigate()
+  const { register } = useActions(authThunk)
 
   const handleRegister = async (data: DataRegisterType) => {
     try {
-      await registerUser(data)
+      await register({ data })
       navigate('/login')
     } catch (error: any) {
       if (error) {

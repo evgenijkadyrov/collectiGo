@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { instance, UserDataType } from '@/api/auth'
+import { UserDataType } from '@/api/auth'
+import { instance } from '@/api/api'
+import { DataRegisterType } from '@/hooks/useRegisterUser'
 
 const login = createAsyncThunk<{ value: boolean }, { data: UserDataType }>(
   'auth/login',
@@ -21,6 +23,19 @@ const logout = createAsyncThunk<void>('auth/logout', async () => {})
 type InitialStateType = {
   isLoggedIn: boolean
 }
+const register = createAsyncThunk<{ value: boolean }, { data: DataRegisterType }>(
+  'auth/login',
+  async (arg) => {
+    try {
+      const res = await instance.post('/auth/register', arg.data)
+
+      return res.data
+    } catch (error: any) {
+      console.log('error', error)
+      throw new Error(`Error login user: ${error.response.data.message}`)
+    }
+  }
+)
 const initialState = {
   isLoggedIn: false,
 }
@@ -43,4 +58,4 @@ const slice = createSlice({
 
 export const auth = slice.reducer
 export const authActions = slice.actions
-export const authThunk = { login, logout }
+export const authThunk = { login, logout, register }
