@@ -29,6 +29,7 @@ export const Header = () => {
     setIsOpen(false)
   }
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
+  const userName = useSelector<RootState, string>((state) => state.auth.user.name)
   const { logout } = useActions(authThunk)
   const handleLogout = () => {
     logout({})
@@ -61,9 +62,12 @@ export const Header = () => {
             Home
           </StyledLink>
           {isLoggedIn && (
-            <StyledLink to={'/'} color={colors.white} onClick={handleLogout}>
-              Logout
-            </StyledLink>
+            <>
+              <AppName color={'white'}>Hello, {userName}</AppName>
+              <StyledLink to={'/'} color={colors.white} onClick={handleLogout}>
+                Logout
+              </StyledLink>
+            </>
           )}
           {!isLoggedIn && (
             <>

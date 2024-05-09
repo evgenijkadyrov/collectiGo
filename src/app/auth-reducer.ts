@@ -1,29 +1,27 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { UserDataType } from '@/api/auth'
 import { instance } from '@/api/api'
 import { DataRegisterType } from '@/hooks/useRegisterUser'
 
-const login = createAsyncThunk<{ value: boolean; token: string }, { data: UserDataType }>(
-  'auth/login',
-  async (arg) => {
-    try {
-      const res = await instance.post('/auth/login', arg.data)
-      if (res.data.token) {
-        return { value: true, token: res.data.token }
-      }
-      return res.data
-    } catch (error: any) {
-      console.log('error', error)
-      throw new Error(`Error login user: ${error.response.data.message}`)
+const login = createAsyncThunk<
+  { value: boolean; token: string; user: UserResponse },
+  { data: UserDataType },
+  { rejectValue: unknown }
+>('auth/login', async (arg, thunkAPI) => {
+  try {
+    const res = await instance.post<{ token: string; user: UserResponse }>('/auth/login', arg.data)
+    if (res.data) {
+      return { value: true, token: res.data.token, user: res.data.user }
     }
+  } catch (error: any) {
+    console.log('error', error)
+    throw new Error(`Error login user: ${error.response.data.message}`)
   }
-)
+  return thunkAPI.rejectWithValue('Unexpected response')
+})
 
 const logout = createAsyncThunk<void>('auth/logout', async () => {})
-type InitialStateType = {
-  isLoggedIn: boolean
-  token: string
-}
+
 const register = createAsyncThunk<{ value: boolean }, { data: DataRegisterType }>(
   'auth/login',
   async (arg) => {
@@ -37,9 +35,24 @@ const register = createAsyncThunk<{ value: boolean }, { data: DataRegisterType }
     }
   }
 )
+interface UserResponse {
+  collections: string[]
+  email: string
+  lastLogin: string
+  name: string
+  password: string
+  status: string
+  _id: string
+}
+type InitialStateType = {
+  isLoggedIn: boolean
+  token: string
+  user: UserResponse
+}
 const initialState = {
   isLoggedIn: false,
   token: '',
+  user: { collections: [], email: '', lastLogin: '', name: '', password: '', status: '', _id: '' },
 }
 const slice = createSlice({
   name: 'auth',
@@ -47,11 +60,12 @@ const slice = createSlice({
   reducers: {
     changeTodolistFilter: () => {},
   },
-  extraReducers: (builder) => {
+  extraReducers: (builder: ActionReducerMapBuilder<InitialStateType>) => {
     builder
-      .addCase(login.fulfilled, (state: InitialStateType, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         state.isLoggedIn = action.payload.value
         state.token = action.payload.token
+        state.user = action.payload.user
       })
       .addCase(logout.fulfilled, (state: InitialStateType) => {
         state.isLoggedIn = false
