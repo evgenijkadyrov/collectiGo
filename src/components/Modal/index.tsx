@@ -15,7 +15,7 @@ interface ModalCustomProps {
 export const ModalCustom = ({ open, setOpen }: ModalCustomProps) => {
   const [confirmLoading, setConfirmLoading] = useState(false)
   const token = useSelector<RootState, string>((state) => state.auth.token)
-  const { createCollections } = useActions(collectionsThunk)
+  const { createCollection } = useActions(collectionsThunk)
 
   const handleCancel = () => {
     setOpen(false)
@@ -23,7 +23,7 @@ export const ModalCustom = ({ open, setOpen }: ModalCustomProps) => {
   const handleSubmit = async (data: ArtCollectionCreate) => {
     setConfirmLoading(true)
     try {
-      await createCollections({ data, token })
+      await createCollection({ data, token })
       setOpen(false)
     } catch (error: any) {
       console.log('error', error)

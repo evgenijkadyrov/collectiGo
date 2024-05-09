@@ -3,7 +3,9 @@ import { ArtCollectionResponse } from '@/data/data'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState, RootStateType } from '@/app/store'
-import { useEffect } from 'react'
+import { MouseEvent } from 'react'
+import {useActions} from "@/hooks/useActions";
+import {collectionsThunk} from "@/app/collections-reducer";
 
 const { Column } = Table
 
@@ -13,6 +15,8 @@ export const TableCollections = () => {
     (state) => state.collections
   )
   const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
+    const {deleteCollection}= useActions(collectionsThunk)
+    const token = useSelector<RootState, string>(state => state.auth.token)
   const handleRowClick = (record: ArtCollectionResponse) => {
     return {
       onClick: () => {
@@ -23,8 +27,10 @@ export const TableCollections = () => {
   const isRecordInMyCollections = (recordId: string) => {
     return myCollections?.includes(recordId)
   }
-  useEffect(() => {}, [myCollections])
-
+    const handleDeleteCollection = (recordId: string, event: MouseEvent<HTMLElement>) => {
+        event.stopPropagation();
+        deleteCollection({ collectionId: recordId, token });
+    };
   return (
     <Table dataSource={collections} onRow={handleRowClick}>
       <Column title="Title" dataIndex="title" />
@@ -37,7 +43,7 @@ export const TableCollections = () => {
             {isRecordInMyCollections(record._id) && (
               <>
                 <a>Edit </a>
-                <a>Delete</a>
+                  <a onClick={(event) => handleDeleteCollection(record._id, event)}>Delete</a>
               </>
             )}
           </Space>
