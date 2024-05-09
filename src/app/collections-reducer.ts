@@ -11,7 +11,7 @@ const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {
     throw new Error(`Error login user: ${error.response.data.message}`)
   }
 })
-const createCollections = createAsyncThunk<
+const createCollection = createAsyncThunk<
   { collection: ArtCollectionResponse; message: string },
   { data: ArtCollection; token: string }
 >('auth/collections', async (arg) => {
@@ -40,7 +40,7 @@ const slice = createSlice({
       .addCase(fetchCollections.fulfilled, (_, action) => {
         return [...action.payload]
       })
-      .addCase(createCollections.fulfilled, (state, action) => {
+      .addCase(createCollection.fulfilled, (state, action) => {
         state.unshift({ ...action.payload.collection })
       })
   },
@@ -48,4 +48,4 @@ const slice = createSlice({
 
 export const collections = slice.reducer
 export const collectionsActions = slice.actions
-export const collectionsThunk = { fetchCollections, createCollections }
+export const collectionsThunk = { fetchCollections, createCollections: createCollection }

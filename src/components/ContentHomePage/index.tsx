@@ -5,28 +5,33 @@ import { TitlePage } from '@/common/TitlePage'
 
 import { StyledContent, Wrapper } from './styles'
 import { TableCollections } from '@components/TableCollections'
-import { useEffect } from 'react'
+import {useEffect, useState} from 'react'
 import { useActions } from '@/hooks/useActions'
 import { collectionsThunk } from '@/app/collections-reducer'
 import { ButtonCustom } from '@components/ButtonCustom'
-import { ArtCollection } from '@/data/data'
+//import { ArtCollection } from '@/data/data'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
+import {ModalCustom} from "@components/Modal";
 
 export const Content = () => {
-  const { fetchCollections, createCollections } = useActions(collectionsThunk)
-  const token = useSelector<RootState, string>((state) => state.auth.token)
+  const [open, setOpen] = useState(false);
+  const { fetchCollections } = useActions(collectionsThunk)
+ // const token = useSelector<RootState, string>((state) => state.auth.token)
   const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn)
   useEffect(() => {
     fetchCollections({})
   }, [])
+
   const handleCreateCollection = () => {
-    const data: ArtCollection = {
-      title: 'new Collection',
-      category: 'Collage',
-      picture: 'http://picture.ru/picrure',
-    }
-    createCollections({ data, token })
+    setOpen(true)
+
+    // const data: ArtCollection = {
+    //   title: 'new Collection',
+    //   category: 'Collage',
+    //   picture: 'http://picture.ru/picrure',
+    // }
+    // createCollections({ data, token })
   }
   return (
     <Wrapper>
@@ -35,7 +40,7 @@ export const Content = () => {
         <SearchArtworkForm setSearchValue={() => {}} />
         <TitleGallery firstLineText={'Last added collection'} />
         {isLoggedIn && <ButtonCustom onClick={handleCreateCollection}>Create</ButtonCustom>}
-
+<ModalCustom open={open} setOpen={setOpen}/>
         <TableCollections />
         <TitleGallery
           firstLineText={'Biggest collections'}
