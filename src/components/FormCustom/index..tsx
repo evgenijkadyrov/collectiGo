@@ -1,109 +1,69 @@
-import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { CloseOutlined } from '@ant-design/icons'
+import { Button, Form, Input, Select, Space } from 'antd'
+import { ArtCollectionCreate, categories } from '@/data/data'
+import { memo } from 'react'
 
-const formItemLayout = {
-    labelCol: {
-        xs: { span: 24 },
-        sm: { span: 4 },
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 20 },
-    },
-};
+interface FormCustomProps {
+  onSubmit: (values: ArtCollectionCreate) => void
+}
 
-const formItemLayoutWithOutLabel = {
-    wrapperCol: {
-        xs: { span: 24, offset: 0 },
-        sm: { span: 20, offset: 4 },
-    },
-};
+export const FormCustom = memo(({ onSubmit }: FormCustomProps) => {
+  const [form] = Form.useForm()
+  const onFinish = (values: ArtCollectionCreate) => {
+    onSubmit(values)
+  }
 
-export const FormCustom = () => {
-    const onFinish = (values: any) => {
-        console.log('Received values of form:', values);
-    };
-
-    return (
-        <Form
-            name="dynamic_form_item"
-    {...formItemLayoutWithOutLabel}
-    onFinish={onFinish}
-    style={{ maxWidth: 600 }}
->
-    <Form.List
-        name="names"
-    rules={[
-            {
-                validator: async (_, names) => {
-                    if (!names || names.length < 2) {
-                        return Promise.reject(new Error('At least 2 passengers'));
-                    }
-                },
-            },
-]}
->
-    {(fields, { add, remove }, { errors }) => (
-        <>
-            {fields.map((field, index) => (
-                    <Form.Item
-                        {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-                label={index === 0 ? 'Passengers' : ''}
-        required={false}
-        key={field.key}
-            >
-            <Form.Item
-                {...field}
-        validateTrigger={['onChange', 'onBlur']}
-        rules={[
-                {
-                    required: true,
-                    whitespace: true,
-                    message: "Please input passenger's name or delete this field.",
-                },
-    ]}
-        noStyle
-        >
-        <Input placeholder="passenger name" style={{ width: '60%' }} />
-    </Form.Item>
-        {fields.length > 1 ? (
-                <MinusCircleOutlined
-                    className="dynamic-delete-button"
-            onClick={() => remove(field.name)}
-            />
-        ) : null}
-        </Form.Item>
-    ))}
-        <Form.Item>
-            <Button
-                type="dashed"
-        onClick={() => add()}
-        style={{ width: '60%' }}
-        icon={<PlusOutlined />}
+  return (
+    <Form
+      id={'myForm'}
+      labelCol={{ span: 6 }}
+      wrapperCol={{ span: 18 }}
+      form={form}
+      name="dynamic_form_complex"
+      style={{ maxWidth: 600 }}
+      autoComplete="off"
+      initialValues={{}}
+      onFinish={onFinish}
     >
-        Add field
-    </Button>
-    <Button
-        type="dashed"
-        onClick={() => {
-        add('The head item', 0);
-    }}
-        style={{ width: '60%', marginTop: '20px' }}
-        icon={<PlusOutlined />}
-    >
-        Add field at head
-    </Button>
-    <Form.ErrorList errors={errors} />
-    </Form.Item>
-    </>
-    )}
-    </Form.List>
-    <Form.Item>
-    <Button type="primary" htmlType="submit">
-        Submit
-        </Button>
-        </Form.Item>
-        </Form>
-);
-};
-
+      <Form.Item label="Title collection" name={'title'}>
+        <Input />
+      </Form.Item>
+      <Form.Item label="Category" name={'category'}>
+        <Select
+          style={{ width: 240 }}
+          options={categories.map((category) => ({
+            label: category,
+            value: category,
+          }))}
+        />
+      </Form.Item>
+      <Form.Item label="Picture" name={'picture'}>
+        <Input />
+      </Form.Item>
+      <Form.List name="items">
+        {(fields, { add, remove }) => (
+          <div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
+            {fields.map((field) => (
+              <Space key={field.key}>
+                <Form.Item noStyle name={[field.name, 'field']}>
+                  <Input placeholder="field" />
+                </Form.Item>
+                <Form.Item noStyle name={[field.name, 'value']}>
+                  <Input placeholder="value" />
+                </Form.Item>
+                <CloseOutlined
+                  onClick={() => {
+                    remove(field.name)
+                  }}
+                />
+              </Space>
+            ))}
+            <Button type="dashed" onClick={() => add()} block>
+              + Add Item
+            </Button>
+          </div>
+        )}
+      </Form.List>
+    </Form>
+  )
+})

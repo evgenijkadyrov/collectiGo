@@ -1,12 +1,17 @@
-export type Category = 'Prints and Drawing' | 'Drawing' | 'Paper' | 'Collage'
+export const categories = ['Prints and Drawing', 'Drawing', 'Paper', 'Collage', 'Book', 'Mark']
+export type category = 'Prints and Drawing' | 'Drawing' | 'Paper' | 'Collage' | 'Book' | 'Mark'
 
 export interface ArtCollectionResponse {
   _id: string
   title: string
-  category: Category
+  category: category
   picture: string
 }
 export interface ArtCollection extends Omit<ArtCollectionResponse, '_id'> {}
+
+export interface ArtCollectionCreate extends Partial<ArtCollection> {
+  items: { field: string; value: string }[]
+}
 
 export interface ArtDataItem {
   item_id: string

@@ -1,4 +1,4 @@
-import { ArtCollection, ArtCollectionResponse } from '@/data/data'
+import { ArtCollectionCreate, ArtCollectionResponse } from '@/data/data'
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { instance } from '@/api/api'
 
@@ -13,7 +13,7 @@ const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {
 })
 const createCollection = createAsyncThunk<
   { collection: ArtCollectionResponse; message: string },
-  { data: ArtCollection; token: string }
+  { data: ArtCollectionCreate; token: string }
 >('auth/collections', async (arg) => {
   try {
     const config = {
