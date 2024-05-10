@@ -1,8 +1,7 @@
 import { AnyAction, combineReducers, configureStore, ThunkDispatch } from '@reduxjs/toolkit'
-import { collections } from './collections-reducer'
+import { ArtCollectionResponse, collections } from './collections-reducer'
 import { items } from './items-reducer'
 import { auth } from '@/app/auth-reducer'
-import { ArtCollectionResponse } from '@/data/data'
 
 const rootReducer = combineReducers({
   collections,

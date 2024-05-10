@@ -1,12 +1,8 @@
-export const categories = ['Prints and Drawing', 'Drawing', 'Paper', 'Collage', 'Book', 'Mark']
-export type category = 'Prints and Drawing' | 'Drawing' | 'Paper' | 'Collage' | 'Book' | 'Mark'
+import { ArtCollectionResponse } from '@/app/collections-reducer'
 
-export interface ArtCollectionResponse {
-  _id: string
-  title: string
-  category: category
-  picture: string
-}
+export const categories = ['Prints and Drawing', 'Drawing', 'Paper', 'Collage', 'Book', 'Mark']
+export type CategoryType = 'Prints and Drawing' | 'Drawing' | 'Paper' | 'Collage' | 'Book' | 'Mark'
+
 export interface ArtCollection extends Omit<ArtCollectionResponse, '_id'> {}
 
 export interface ArtCollectionCreate extends Partial<ArtCollection> {

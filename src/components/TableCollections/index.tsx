@@ -1,19 +1,20 @@
 import { Space, Table } from 'antd'
-import { ArtCollectionResponse } from '@/data/data'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { RootState, RootStateType } from '@/app/store'
+import { RootState } from '@/app/store'
 import { MouseEvent } from 'react'
 import { useActions } from '@/hooks/useActions'
-import { collectionsThunk } from '@/app/collections-reducer'
+import { ArtCollectionResponse, collectionsThunk, CollectionsType } from '@/app/collections-reducer'
+import { LoadingSpinner } from '@components/Loader'
 
 const { Column } = Table
 
 export const TableCollections = () => {
   const navigate = useNavigate()
-  const collections = useSelector<RootStateType, ArtCollectionResponse[]>(
-    (state) => state.collections
-  )
+  const { collections, isLoading } = useSelector<RootState, CollectionsType>((state) => ({
+    collections: state.collections.collections,
+    isLoading: state.collections.isLoading,
+  }))
   const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
   const { deleteCollection } = useActions(collectionsThunk)
   const token = useSelector<RootState, string>((state) => state.auth.token)
@@ -30,6 +31,9 @@ export const TableCollections = () => {
   const handleDeleteCollection = (recordId: string, event: MouseEvent<HTMLElement>) => {
     event.stopPropagation()
     deleteCollection({ collectionId: recordId, token })
+  }
+  if (isLoading) {
+    return <LoadingSpinner />
   }
   return (
     <Table dataSource={collections} onRow={handleRowClick}>

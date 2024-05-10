@@ -6,6 +6,7 @@ import { useActions } from '@/hooks/useActions'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { ArtCollectionCreate } from '@/data/data'
+import { LoadingSpinner } from '@components/Loader'
 
 interface ModalCustomProps {
   open: boolean
@@ -47,7 +48,7 @@ export const ModalCustom = ({ open, setOpen }: ModalCustomProps) => {
         </Button>,
       ]}
     >
-      <FormCustom onSubmit={handleSubmit} />
+      {confirmLoading ? <LoadingSpinner /> : <FormCustom onSubmit={handleSubmit} />}
     </Modal>
   )
 }
