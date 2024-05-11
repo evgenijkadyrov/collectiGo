@@ -1,6 +1,6 @@
-import { ArtCollectionCreate, CategoryType } from '@/data/data'
-import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { instance } from '@/api/api'
+import {ArtCollectionCreate, CategoryType} from '@/data/data'
+import {ActionReducerMapBuilder, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import {instance} from '@/api/api'
 
 export interface ArtCollectionResponse {
   _id: string
@@ -85,7 +85,7 @@ const collectionsSlice = createSlice({
         state.isLoading = true
       })
       .addCase(deleteCollection.fulfilled, (state, action) => {
-        debugger
+
         const collectionId = action.meta.arg.collectionId
         state.collections = state.collections.filter(
           (collection) => collection._id !== collectionId

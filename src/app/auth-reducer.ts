@@ -2,6 +2,7 @@ import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs
 import { UserDataType } from '@/api/auth'
 import { instance } from '@/api/api'
 import { DataRegisterType } from '@/hooks/useRegisterUser'
+import { collectionsThunk } from '@/app/collections-reducer'
 
 const login = createAsyncThunk<
   { value: boolean; token: string; user: UserResponse },
@@ -23,7 +24,7 @@ const login = createAsyncThunk<
 const logout = createAsyncThunk<void>('auth/logout', async () => {})
 
 const register = createAsyncThunk<{ value: boolean }, { data: DataRegisterType }>(
-  'auth/login',
+  'auth/register',
   async (arg) => {
     try {
       const res = await instance.post('/auth/register', arg.data)
@@ -66,6 +67,9 @@ const slice = createSlice({
         state.isLoggedIn = action.payload.value
         state.token = action.payload.token
         state.user = action.payload.user
+      })
+      .addCase(collectionsThunk.createCollection.fulfilled, (state, action) => {
+        state.user.collections.unshift(action.payload.collection._id)
       })
       .addCase(logout.fulfilled, (state: InitialStateType) => {
         state.isLoggedIn = false

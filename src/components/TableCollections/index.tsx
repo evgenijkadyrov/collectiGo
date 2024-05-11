@@ -1,11 +1,15 @@
-import { Space, Table } from 'antd'
-import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/app/store'
-import { MouseEvent } from 'react'
-import { useActions } from '@/hooks/useActions'
-import { ArtCollectionResponse, collectionsThunk, CollectionsType } from '@/app/collections-reducer'
-import { LoadingSpinner } from '@components/Loader'
+import {Space, Table} from 'antd'
+import {useNavigate} from 'react-router-dom'
+import {useSelector} from 'react-redux'
+import {RootState} from '@/app/store'
+import {MouseEvent} from 'react'
+import {useActions} from '@/hooks/useActions'
+import {
+    ArtCollectionResponse,
+    collectionsThunk,
+    CollectionsType
+} from '@/app/collections-reducer'
+import {LoadingSpinner} from '@components/Loader'
 
 const { Column } = Table
 
@@ -25,7 +29,8 @@ export const TableCollections = () => {
       },
     }
   }
-  const isRecordInMyCollections = (recordId: string) => {
+
+   const isRecordInMyCollections = (recordId: string) => {
     return myCollections?.includes(recordId)
   }
   const handleDeleteCollection = (recordId: string, event: MouseEvent<HTMLElement>) => {
