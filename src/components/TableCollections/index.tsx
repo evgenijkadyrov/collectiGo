@@ -1,19 +1,15 @@
-import {Space, Table} from 'antd'
-import {useNavigate} from 'react-router-dom'
-import {useSelector} from 'react-redux'
-import {RootState} from '@/app/store'
-import {MouseEvent} from 'react'
-import {useActions} from '@/hooks/useActions'
-import {
-    ArtCollectionResponse,
-    collectionsThunk,
-    CollectionsType
-} from '@/app/collections-reducer'
-import {LoadingSpinner} from '@components/Loader'
+import { Space, Table } from 'antd'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
+import { memo, MouseEvent, useCallback } from 'react'
+import { useActions } from '@/hooks/useActions'
+import { ArtCollectionResponse, collectionsThunk, CollectionsType } from '@/app/collections-reducer'
+import { LoadingSpinner } from '@components/Loader'
 
 const { Column } = Table
 
-export const TableCollections = () => {
+export const TableCollections = memo(() => {
   const navigate = useNavigate()
   const { collections, isLoading } = useSelector<RootState, CollectionsType>((state) => ({
     collections: state.collections.collections,
@@ -21,22 +17,37 @@ export const TableCollections = () => {
   }))
   const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
   const { deleteCollection } = useActions(collectionsThunk)
-  const token = useSelector<RootState, string>((state) => state.auth.token)
-  const handleRowClick = (record: ArtCollectionResponse) => {
-    return {
-      onClick: () => {
-        navigate(`${record._id}`)
-      },
-    }
-  }
+  const handleRowClick = useCallback(
+    (record: ArtCollectionResponse) => {
+      return {
+        onClick: () => {
+          navigate(`${record._id}`)
+        },
+      }
+    },
+    [navigate]
+  )
 
-   const isRecordInMyCollections = (recordId: string) => {
-    return myCollections?.includes(recordId)
-  }
-  const handleDeleteCollection = (recordId: string, event: MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-    deleteCollection({ collectionId: recordId, token })
-  }
+  const isRecordInMyCollections = useCallback(
+    (recordId: string) => {
+      return myCollections?.includes(recordId)
+    },
+    [myCollections]
+  )
+  const handleDeleteCollection = useCallback(
+    (recordId: string, event: MouseEvent<HTMLElement>) => {
+      event.stopPropagation()
+      deleteCollection({ collectionId: recordId })
+    },
+    [deleteCollection]
+  )
+  const handleEditCollection = useCallback(
+    (recordId: string, event: MouseEvent<HTMLElement>) => {
+      event.stopPropagation()
+      navigate(`${recordId}/edit`)
+    },
+    [deleteCollection]
+  )
   if (isLoading) {
     return <LoadingSpinner />
   }
@@ -51,7 +62,7 @@ export const TableCollections = () => {
           <Space size="middle">
             {isRecordInMyCollections(record._id) && (
               <>
-                <a>Edit </a>
+                <a onClick={(event) => handleEditCollection(record._id, event)}>Edit</a>
                 <a onClick={(event) => handleDeleteCollection(record._id, event)}>Delete</a>
               </>
             )}
@@ -60,4 +71,4 @@ export const TableCollections = () => {
       />
     </Table>
   )
-}
+})

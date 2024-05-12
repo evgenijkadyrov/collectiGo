@@ -3,26 +3,34 @@ import { UserDataType } from '@/api/auth'
 import { instance } from '@/api/api'
 import { DataRegisterType } from '@/hooks/useRegisterUser'
 import { collectionsThunk } from '@/app/collections-reducer'
+import { message } from 'antd'
 
 const login = createAsyncThunk<
-  { value: boolean; token: string; user: UserResponse },
+  { value: boolean; token: string; user: UserResponse; message: string },
   { data: UserDataType },
   { rejectValue: unknown }
 >('auth/login', async (arg, thunkAPI) => {
   try {
-    const res = await instance.post<{ token: string; user: UserResponse }>('/auth/login', arg.data)
+    const res = await instance.post<{ token: string; user: UserResponse; message: string }>(
+      '/auth/login',
+      arg.data
+    )
     if (res.data) {
-      return { value: true, token: res.data.token, user: res.data.user }
+      return {
+        value: true,
+        token: res.data.token,
+        user: res.data.user,
+        message: res.data.message,
+      }
     }
   } catch (error: any) {
-    console.log('error', error)
     throw new Error(`Error login user: ${error.response.data.message}`)
   }
   return thunkAPI.rejectWithValue('Unexpected response')
 })
 
 const logout = createAsyncThunk<void>('auth/logout', async () => {})
-
+const clearMessage = createAsyncThunk<void>('auth/clear', async () => {})
 const register = createAsyncThunk<{ value: boolean }, { data: DataRegisterType }>(
   'auth/register',
   async (arg) => {
@@ -31,11 +39,11 @@ const register = createAsyncThunk<{ value: boolean }, { data: DataRegisterType }
 
       return res.data
     } catch (error: any) {
-      console.log('error', error)
       throw new Error(`Error login user: ${error.response.data.message}`)
     }
   }
 )
+
 interface UserResponse {
   collections: string[]
   email: string
@@ -45,21 +53,34 @@ interface UserResponse {
   status: string
   _id: string
 }
+
 type InitialStateType = {
   isLoggedIn: boolean
   token: string
   user: UserResponse
+  message: string
 }
 const initialState = {
   isLoggedIn: false,
   token: '',
-  user: { collections: [], email: '', lastLogin: '', name: '', password: '', status: '', _id: '' },
+  user: {
+    collections: [],
+    email: '',
+    lastLogin: '',
+    name: '',
+    password: '',
+    status: '',
+    _id: '',
+  },
+  message: '',
 }
 const slice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    changeTodolistFilter: () => {},
+    clearMessage: (state) => {
+      state.message = ''
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<InitialStateType>) => {
     builder
@@ -67,6 +88,12 @@ const slice = createSlice({
         state.isLoggedIn = action.payload.value
         state.token = action.payload.token
         state.user = action.payload.user
+        state.message = action.payload.message
+        message.success(state.message)
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.message = action.error.message || 'Login failed'
+        message.error(state.message)
       })
       .addCase(collectionsThunk.createCollection.fulfilled, (state, action) => {
         state.user.collections.unshift(action.payload.collection._id)
@@ -79,4 +106,4 @@ const slice = createSlice({
 
 export const auth = slice.reducer
 export const authActions = slice.actions
-export const authThunk = { login, logout, register }
+export const authThunk = { login, logout, register, clearMessage }

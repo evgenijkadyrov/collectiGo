@@ -4,4 +4,5 @@ export const Paths = {
   register: '/register',
   collection: '/:collectionId',
   item: '/:collectionId/items/:itemId',
+  editCollection: '/:collectionId/edit',
 }

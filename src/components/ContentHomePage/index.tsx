@@ -16,7 +16,9 @@ import { ModalCustom } from '@components/Modal'
 export const Content = () => {
   const [open, setOpen] = useState(false)
   const { fetchCollections } = useActions(collectionsThunk)
+
   const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn)
+
   useEffect(() => {
     fetchCollections({})
   }, [])
@@ -24,6 +26,7 @@ export const Content = () => {
   const handleCreateCollection = () => {
     setOpen(true)
   }
+
   return (
     <Wrapper>
       <StyledContent>

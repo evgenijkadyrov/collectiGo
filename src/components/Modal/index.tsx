@@ -3,8 +3,6 @@ import { Button, Modal } from 'antd'
 import { FormCustom } from '@components/FormCustom/index.'
 import { collectionsThunk } from '@/app/collections-reducer'
 import { useActions } from '@/hooks/useActions'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/app/store'
 import { ArtCollectionCreate } from '@/data/data'
 import { LoadingSpinner } from '@components/Loader'
 
@@ -15,7 +13,6 @@ interface ModalCustomProps {
 
 export const ModalCustom = ({ open, setOpen }: ModalCustomProps) => {
   const [confirmLoading, setConfirmLoading] = useState(false)
-  const token = useSelector<RootState, string>((state) => state.auth.token)
   const { createCollection } = useActions(collectionsThunk)
 
   const handleCancel = () => {
@@ -24,7 +21,7 @@ export const ModalCustom = ({ open, setOpen }: ModalCustomProps) => {
   const handleSubmit = async (data: ArtCollectionCreate) => {
     setConfirmLoading(true)
     try {
-      await createCollection({ data, token })
+      await createCollection({ data })
       setOpen(false)
     } catch (error: any) {
       console.log('error', error)

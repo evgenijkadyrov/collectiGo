@@ -1,6 +1,7 @@
-import {ArtCollectionCreate, CategoryType} from '@/data/data'
-import {ActionReducerMapBuilder, createAsyncThunk, createSlice} from '@reduxjs/toolkit'
-import {instance} from '@/api/api'
+import { ArtCollectionCreate, CategoryType } from '@/data/data'
+import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { instance } from '@/api/api'
+import { RootState } from '@/app/store'
 
 export interface ArtCollectionResponse {
   _id: string
@@ -8,6 +9,11 @@ export interface ArtCollectionResponse {
   category: CategoryType
   picture: string
 }
+const configApi = (token: string) => ({
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+})
 
 const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {
   try {
@@ -20,42 +26,52 @@ const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {
 })
 const createCollection = createAsyncThunk<
   { collection: ArtCollectionResponse; message: string },
-  { data: ArtCollectionCreate; token: string }
->('auth/collections', async (arg) => {
+  { data: ArtCollectionCreate },
+  { state: RootState }
+>('auth/collections', async (arg, thunkAPI) => {
   try {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${arg.token}`,
-      },
-    }
-    const res = await instance.post('/auth/collections', arg.data, config)
+    const { token } = thunkAPI.getState().auth
+    const res = await instance.post('/auth/collections', arg.data, configApi(token))
     return res.data
   } catch (error: any) {
-    console.log('error', error)
     throw new Error(`Error login user: ${error.response.data.message}`)
   }
 })
-const deleteCollection = createAsyncThunk<string, { collectionId: string; token: string }>(
+const deleteCollection = createAsyncThunk<string, { collectionId: string }, { state: RootState }>(
   'auth/deleteCollection',
-  async (arg) => {
+  async (arg, thunkAPI) => {
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${arg.token}`,
-        },
-      }
-      const res = await instance.delete(`/auth/collections/${arg.collectionId}`, config)
+      const { token } = thunkAPI.getState().auth
+      const res = await instance.delete(`/auth/collections/${arg.collectionId}`, configApi(token))
       return res.data
     } catch (error: any) {
-      console.log('error', error)
       throw new Error(`Error deleting collection: ${error.response.data.message}`)
     }
   }
 )
+const updateCollection = createAsyncThunk<
+  { collection: ArtCollectionResponse; message: string },
+  { collectionId: string; collectionData: Partial<ArtCollectionResponse> },
+  { state: RootState }
+>('auth/updateCollection', async (arg, thunkAPI) => {
+  try {
+    const { token } = thunkAPI.getState().auth
+    const res = await instance.put(
+      `/auth/collections/${arg.collectionId}`,
+      arg.collectionData,
+      configApi(token)
+    )
+    return res.data
+  } catch (error: any) {
+    throw new Error(`Error updating collection: ${error.response.data.message}`)
+  }
+})
+
 export interface CollectionsType {
   collections: ArtCollectionResponse[]
   isLoading: boolean
 }
+
 const initialState: CollectionsType = {
   collections: [],
   isLoading: false,
@@ -85,7 +101,6 @@ const collectionsSlice = createSlice({
         state.isLoading = true
       })
       .addCase(deleteCollection.fulfilled, (state, action) => {
-
         const collectionId = action.meta.arg.collectionId
         state.collections = state.collections.filter(
           (collection) => collection._id !== collectionId
@@ -95,9 +110,30 @@ const collectionsSlice = createSlice({
       .addCase(deleteCollection.rejected, (state) => {
         state.isLoading = false
       })
+      .addCase(updateCollection.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateCollection.fulfilled, (state, action) => {
+        const updatedCollection = action.payload.collection
+        const collectionIndex = state.collections.findIndex(
+          (collection) => collection._id === updatedCollection._id
+        )
+        if (collectionIndex !== -1) {
+          state.collections[collectionIndex] = updatedCollection
+        }
+        state.isLoading = false
+      })
+      .addCase(updateCollection.rejected, (state) => {
+        state.isLoading = false
+      })
   },
 })
 
 export const collections = collectionsSlice.reducer
 export const collectionsActions = collectionsSlice.actions
-export const collectionsThunk = { fetchCollections, createCollection, deleteCollection }
+export const collectionsThunk = {
+  fetchCollections,
+  createCollection,
+  deleteCollection,
+  updateCollection,
+}
