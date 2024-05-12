@@ -29,8 +29,6 @@ const login = createAsyncThunk<
   return thunkAPI.rejectWithValue('Unexpected response')
 })
 
-const logout = createAsyncThunk<void>('auth/logout', async () => {})
-const clearMessage = createAsyncThunk<void>('auth/clear', async () => {})
 const register = createAsyncThunk<{ value: boolean }, { data: DataRegisterType }>(
   'auth/register',
   async (arg) => {
@@ -60,7 +58,7 @@ type InitialStateType = {
   user: UserResponse
   message: string
 }
-const initialState = {
+const initialState: InitialStateType = {
   isLoggedIn: false,
   token: '',
   user: {
@@ -81,6 +79,9 @@ const slice = createSlice({
     clearMessage: (state) => {
       state.message = ''
     },
+    logout: (state) => {
+      state.isLoggedIn = false
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<InitialStateType>) => {
     builder
@@ -88,8 +89,7 @@ const slice = createSlice({
         state.isLoggedIn = action.payload.value
         state.token = action.payload.token
         state.user = action.payload.user
-        state.message = action.payload.message
-        message.success(state.message)
+        message.success(action.payload.message)
       })
       .addCase(login.rejected, (state, action) => {
         state.message = action.error.message || 'Login failed'
@@ -98,12 +98,10 @@ const slice = createSlice({
       .addCase(collectionsThunk.createCollection.fulfilled, (state, action) => {
         state.user.collections.unshift(action.payload.collection._id)
       })
-      .addCase(logout.fulfilled, (state: InitialStateType) => {
-        state.isLoggedIn = false
-      })
   },
 })
 
 export const auth = slice.reducer
-export const authActions = slice.actions
-export const authThunk = { login, logout, register, clearMessage }
+
+export const { clearMessage, logout } = slice.actions
+export const authThunk = { login, register }

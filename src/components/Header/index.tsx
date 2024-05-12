@@ -19,20 +19,20 @@ import {
 } from './styles'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
-import { authThunk } from '@/app/auth-reducer'
-import { useActions } from '@/hooks/useActions'
+import { logout } from '@/app/auth-reducer'
 import { Paths } from '@/Paths'
+import { useAppDispatch } from '@/hooks/useAppDispatch'
 
 export const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const dispatch = useAppDispatch()
   const onClose = () => {
     setIsOpen(false)
   }
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
   const userName = useSelector<RootState, string>((state) => state.auth.user.name)
-  const { logout } = useActions(authThunk)
   const handleLogout = () => {
-    logout({})
+    dispatch(logout)
   }
 
   return (

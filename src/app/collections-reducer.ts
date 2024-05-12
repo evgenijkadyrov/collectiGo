@@ -1,7 +1,8 @@
 import { ArtCollectionCreate, CategoryType } from '@/data/data'
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import { instance } from '@/api/api'
+import { configApi, instance } from '@/api/api'
 import { RootState } from '@/app/store'
+import { message } from 'antd'
 
 export interface ArtCollectionResponse {
   _id: string
@@ -9,11 +10,6 @@ export interface ArtCollectionResponse {
   category: CategoryType
   picture: string
 }
-const configApi = (token: string) => ({
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-})
 
 const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {
   try {
@@ -37,18 +33,19 @@ const createCollection = createAsyncThunk<
     throw new Error(`Error login user: ${error.response.data.message}`)
   }
 })
-const deleteCollection = createAsyncThunk<string, { collectionId: string }, { state: RootState }>(
-  'auth/deleteCollection',
-  async (arg, thunkAPI) => {
-    try {
-      const { token } = thunkAPI.getState().auth
-      const res = await instance.delete(`/auth/collections/${arg.collectionId}`, configApi(token))
-      return res.data
-    } catch (error: any) {
-      throw new Error(`Error deleting collection: ${error.response.data.message}`)
-    }
+const deleteCollection = createAsyncThunk<
+  { message: string },
+  { collectionId: string },
+  { state: RootState }
+>('auth/deleteCollection', async (arg, thunkAPI) => {
+  try {
+    const { token } = thunkAPI.getState().auth
+    const res = await instance.delete(`/auth/collections/${arg.collectionId}`, configApi(token))
+    return res.data
+  } catch (error: any) {
+    throw new Error(`Error deleting collection: ${error.response.data.message}`)
   }
-)
+})
 const updateCollection = createAsyncThunk<
   { collection: ArtCollectionResponse; message: string },
   { collectionId: string; collectionData: Partial<ArtCollectionResponse> },
@@ -96,6 +93,10 @@ const collectionsSlice = createSlice({
       })
       .addCase(createCollection.fulfilled, (state, action) => {
         state.collections.unshift(action.payload.collection)
+        message.success(action.payload.message)
+      })
+      .addCase(createCollection.rejected, (_, action) => {
+        message.error(action.error.message)
       })
       .addCase(deleteCollection.pending, (state) => {
         state.isLoading = true
@@ -106,9 +107,11 @@ const collectionsSlice = createSlice({
           (collection) => collection._id !== collectionId
         )
         state.isLoading = false
+        message.success(action.payload.message)
       })
-      .addCase(deleteCollection.rejected, (state) => {
+      .addCase(deleteCollection.rejected, (state, action) => {
         state.isLoading = false
+        message.error(action.error.message)
       })
       .addCase(updateCollection.pending, (state) => {
         state.isLoading = true
@@ -122,9 +125,11 @@ const collectionsSlice = createSlice({
           state.collections[collectionIndex] = updatedCollection
         }
         state.isLoading = false
+        message.success(action.payload.message)
       })
-      .addCase(updateCollection.rejected, (state) => {
+      .addCase(updateCollection.rejected, (state, action) => {
         state.isLoading = false
+        message.error(action.error.message)
       })
   },
 })

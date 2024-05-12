@@ -1,5 +1,5 @@
 import { AnyAction, combineReducers, configureStore, ThunkDispatch } from '@reduxjs/toolkit'
-import { ArtCollectionResponse, collections } from './collections-reducer'
+import { collections } from './collections-reducer'
 import { items } from './items-reducer'
 import { auth } from '@/app/auth-reducer'
 
@@ -14,12 +14,4 @@ export const store = configureStore({
 })
 
 export type RootState = ReturnType<typeof store.getState>
-export type RootStateType = {
-  collections: ArtCollectionResponse[]
-  items: any
-  auth: {
-    isLoggedIn: boolean
-    token: string
-  }
-}
 export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>
