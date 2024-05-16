@@ -53,9 +53,10 @@ export const TableCollections = memo(() => {
   }
   return (
     <Table dataSource={collections} onRow={handleRowClick}>
-      <Column title="Title" dataIndex="title" />
+      <Column title="Name collection" dataIndex="name" />
       <Column title="Category" dataIndex="category" />
-      <Column title="Picture" dataIndex="picture" />
+      <Column title="Image" dataIndex="image_url" />
+      <Column title="Description" dataIndex="description" />
       <Column
         title="Action"
         render={(_: any, record: ArtCollectionResponse) => (

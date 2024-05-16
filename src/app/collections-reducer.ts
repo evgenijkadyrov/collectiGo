@@ -9,6 +9,10 @@ export interface ArtCollectionResponse {
   title: string
   category: CategoryType
   picture: string
+  description: string
+  custom_string1_state: string
+  custom_string2_state: string
+  custom_string3_state: string
 }
 
 const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {
@@ -17,7 +21,7 @@ const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {
     return res.data
   } catch (error: any) {
     console.log('error', error)
-    throw new Error(`Error login user: ${error.response.data.message}`)
+    throw new Error(`Error get collections: ${error.response.data.message}`)
   }
 })
 const createCollection = createAsyncThunk<
@@ -30,7 +34,7 @@ const createCollection = createAsyncThunk<
     const res = await instance.post('/auth/collections', arg.data, configApi(token))
     return res.data
   } catch (error: any) {
-    throw new Error(`Error login user: ${error.response.data.message}`)
+    throw new Error(`Error collection: ${error.response.data.message}`)
   }
 })
 const deleteCollection = createAsyncThunk<

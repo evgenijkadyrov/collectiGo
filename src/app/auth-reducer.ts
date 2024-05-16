@@ -37,7 +37,7 @@ const register = createAsyncThunk<{ value: boolean }, { data: DataRegisterType }
 
       return res.data
     } catch (error: any) {
-      throw new Error(`Error login user: ${error.response.data.message}`)
+      throw new Error(`Error register user: ${error.response.data.message}`)
     }
   }
 )
@@ -91,9 +91,8 @@ const slice = createSlice({
         state.user = action.payload.user
         message.success(action.payload.message)
       })
-      .addCase(login.rejected, (state, action) => {
-        state.message = action.error.message || 'Login failed'
-        message.error(state.message)
+      .addCase(login.rejected, (_, action) => {
+        message.error(action.error.message)
       })
       .addCase(collectionsThunk.createCollection.fulfilled, (state, action) => {
         state.user.collections.unshift(action.payload.collection._id)

@@ -1,12 +1,29 @@
 import { ArtCollectionResponse } from '@/app/collections-reducer'
 
-export const categories = ['Prints and Drawing', 'Drawing', 'Paper', 'Collage', 'Book', 'Mark']
-export type CategoryType = 'Prints and Drawing' | 'Drawing' | 'Paper' | 'Collage' | 'Book' | 'Mark'
+export const collectionsCategory: CategoryType[] = [
+  'Coins',
+  'Stamps',
+  'Sports Memorabilia',
+  'Art',
+  'Books',
+  'Antiques',
+  'Comic Books',
+  'Music Records',
+]
+export type CategoryType =
+  | 'Coins'
+  | 'Stamps'
+  | 'Sports Memorabilia'
+  | 'Art'
+  | 'Books'
+  | 'Antiques'
+  | 'Comic Books'
+  | 'Music Records'
 
 export interface ArtCollection extends Omit<ArtCollectionResponse, '_id'> {}
 
 export interface ArtCollectionCreate extends Partial<ArtCollection> {
-  items: { field: string; value: string }[]
+  optionalFields: { field: boolean; name: string }[]
 }
 
 export interface ArtDataItem {
@@ -19,21 +36,6 @@ export interface ArtDataItem {
   content?: string
   year?: number
 }
-
-export const collections: ArtCollectionResponse[] = [
-  {
-    _id: '1',
-    title: 'Abstract Forms',
-    category: 'Prints and Drawing',
-    picture: 'abstract1.jpg',
-  },
-  {
-    _id: '2',
-    title: "Nature's Beauty",
-    category: 'Drawing',
-    picture: 'nature1.jpg',
-  },
-]
 
 export const items: ArtDataItem[] = [
   {

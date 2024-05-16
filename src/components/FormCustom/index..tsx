@@ -1,7 +1,8 @@
 import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Select, Space } from 'antd'
-import { ArtCollectionCreate, categories } from '@/data/data'
+import { ArtCollectionCreate, collectionsCategory } from '@/data/data'
 import { memo } from 'react'
+import TextArea from 'antd/es/input/TextArea'
 
 interface FormCustomProps {
   onSubmit: (values: ArtCollectionCreate) => void
@@ -25,31 +26,34 @@ export const FormCustom = memo(({ onSubmit }: FormCustomProps) => {
       initialValues={{}}
       onFinish={onFinish}
     >
-      <Form.Item label="Title collection" name={'title'}>
+      <Form.Item label="Name collection" name={'name'}>
         <Input />
       </Form.Item>
       <Form.Item label="Category" name={'category'}>
         <Select
           style={{ width: 240 }}
-          options={categories.map((category) => ({
+          options={collectionsCategory.map((category) => ({
             label: category,
             value: category,
           }))}
         />
       </Form.Item>
-      <Form.Item label="Picture" name={'picture'}>
+      <Form.Item label="Image" name={'image_url'}>
         <Input />
       </Form.Item>
-      <Form.List name="items">
+      <Form.Item label="Description" name={'description'}>
+        <TextArea />
+      </Form.Item>
+      <Form.List name="optionalFields">
         {(fields, { add, remove }) => (
           <div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
             {fields.map((field) => (
               <Space key={field.key}>
-                <Form.Item noStyle name={[field.name, 'field']}>
-                  <Input placeholder="field" />
-                </Form.Item>
-                <Form.Item noStyle name={[field.name, 'value']}>
-                  <Input placeholder="value" />
+                {/*<Form.Item noStyle name={[field.name, 'field']}>*/}
+                {/*  <input type="hidden" value={true} />*/}
+                {/*</Form.Item>*/}
+                <Form.Item noStyle name={[field.name, 'name']}>
+                  <Input placeholder="enter field name" />
                 </Form.Item>
                 <CloseOutlined
                   onClick={() => {

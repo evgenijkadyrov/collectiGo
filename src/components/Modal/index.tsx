@@ -38,6 +38,7 @@ export const ModalCustom = ({ open, setOpen }: ModalCustomProps) => {
       visible={open}
       confirmLoading={confirmLoading}
       okText={'Save'}
+      onCancel={handleCancel}
       footer={[
         <Button onClick={handleCancel}>Cancel</Button>,
         <Button form="myForm" key="submit" htmlType="submit">
