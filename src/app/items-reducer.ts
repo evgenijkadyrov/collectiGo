@@ -52,7 +52,7 @@ const slice = createSlice({
         state.isLoading = true
       })
       .addCase(fetchItems.fulfilled, (state, action) => {
-        debugger
+        state.items = action.payload.items
         state.isLoading = false
       })
       .addCase(fetchItems.rejected, (state) => {
