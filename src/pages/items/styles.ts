@@ -118,6 +118,8 @@ export const StyledContent = styled.div`
   margin-top: 120px;
   margin-bottom: 120px;
   display: flex;
+  width: 70%;
+  flex-direction: column;
 
   @media (max-width: 391px) {
     margin-top: 30px;

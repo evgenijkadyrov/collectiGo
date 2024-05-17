@@ -6,6 +6,7 @@ import { memo, MouseEvent, useCallback } from 'react'
 import { useActions } from '@/hooks/useActions'
 import { ArtCollectionResponse, collectionsThunk, CollectionsType } from '@/app/collections-reducer'
 import { LoadingSpinner } from '@components/Loader'
+import { itemsThunk } from '@/app/items-reducer'
 
 const { Column } = Table
 
@@ -17,11 +18,13 @@ export const TableCollections = memo(() => {
   }))
   const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
   const { deleteCollection } = useActions(collectionsThunk)
+  const { fetchItems } = useActions(itemsThunk)
   const handleRowClick = useCallback(
     (record: ArtCollectionResponse) => {
       return {
-        onClick: () => {
-          navigate(`${record._id}`)
+        onClick: async () => {
+          await fetchItems(record._id)
+          navigate(record._id)
         },
       }
     },

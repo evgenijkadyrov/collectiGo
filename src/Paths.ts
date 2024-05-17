@@ -3,6 +3,7 @@ export const Paths = {
   login: '/login',
   register: '/register',
   collection: '/:collectionId',
+  items: '/:collectionId/items',
   item: '/:collectionId/items/:itemId',
   editCollection: '/:collectionId/edit',
 }

@@ -13,6 +13,9 @@ export interface ArtCollectionResponse {
   custom_string1_state: string
   custom_string2_state: string
   custom_string3_state: string
+  custom_string1_name: string
+  custom_string2_name: string
+  custom_string3_name: string
 }
 
 const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {

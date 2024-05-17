@@ -32,14 +32,11 @@ export const Content = () => {
       <StyledContent>
         <TitlePage firstLine={'Your favorite collections '} isActive={true} />
         <SearchArtworkForm setSearchValue={() => {}} />
-        <TitleGallery firstLineText={'Last added collection'} />
+        <TitleGallery firstLineText={'Last added items'} />
         {isLoggedIn && <ButtonCustom onClick={handleCreateCollection}>Create</ButtonCustom>}
-        <ModalCustom open={open} setOpen={setOpen} />
+        <ModalCustom open={open} setOpen={setOpen} createItemMode={false} />
         <TableCollections />
-        <TitleGallery
-          firstLineText={'Biggest collections'}
-          secondLineText={'Last added collection'}
-        />
+        <TitleGallery firstLineText={'Biggest collections'} secondLineText={'Last added items'} />
       </StyledContent>
     </Wrapper>
   )

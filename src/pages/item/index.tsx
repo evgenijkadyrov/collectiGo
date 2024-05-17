@@ -2,20 +2,22 @@ import { TitleGallery } from '@/common/TitleForGallery'
 import { Layout } from '@/common/Layout/Layout'
 import { Content, Wrapper } from './styles'
 import { useParams } from 'react-router-dom'
-import { items } from '@/data/data'
 import { Card, Tag } from 'antd'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
+import { ArtDataItemResponse } from '@/data/data'
 
 export const Item = () => {
   const { itemId } = useParams()
-
-  const item = items.find((item) => item.item_id === itemId)
+  const items = useSelector<RootState, ArtDataItemResponse[]>((state) => state.items.items)
+  const item = items.find((item) => item._id === itemId)
   return (
     <Layout>
       <Wrapper>
         <Content>
           <TitleGallery firstLineText={'Item'} />
           {item && (
-            <Card title={item.title} bordered={false}>
+            <Card title={item.name} bordered={false}>
               {Object.entries(item).map(([key, value]) => {
                 if (key == 'item_id' || key == 'collection_id') {
                   return null

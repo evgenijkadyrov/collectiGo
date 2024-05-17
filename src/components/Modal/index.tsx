@@ -5,14 +5,18 @@ import { collectionsThunk } from '@/app/collections-reducer'
 import { useActions } from '@/hooks/useActions'
 import { ArtCollectionCreate } from '@/data/data'
 import { LoadingSpinner } from '@components/Loader'
+import { FormItemCustom } from '@components/FormItemCustom'
 
 interface ModalCustomProps {
   open: boolean
   setOpen: Dispatch<SetStateAction<boolean>>
+  collectionId?: string
+  createItemMode: boolean
 }
 
-export const ModalCustom = ({ open, setOpen }: ModalCustomProps) => {
+export const ModalCustom = ({ open, setOpen, collectionId, createItemMode }: ModalCustomProps) => {
   const [confirmLoading, setConfirmLoading] = useState(false)
+
   const { createCollection } = useActions(collectionsThunk)
 
   const handleCancel = () => {
@@ -46,7 +50,13 @@ export const ModalCustom = ({ open, setOpen }: ModalCustomProps) => {
         </Button>,
       ]}
     >
-      {confirmLoading ? <LoadingSpinner /> : <FormCustom onSubmit={handleSubmit} />}
+      {confirmLoading ? (
+        <LoadingSpinner />
+      ) : createItemMode ? (
+        <FormItemCustom setOpen={setOpen} collectionId={collectionId} />
+      ) : (
+        <FormCustom onSubmit={handleSubmit} />
+      )}
     </Modal>
   )
 }
