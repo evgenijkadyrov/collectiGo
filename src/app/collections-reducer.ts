@@ -6,9 +6,9 @@ import { message } from 'antd'
 
 export interface ArtCollectionResponse {
   _id: string
-  title: string
+  name: string
   category: CategoryType
-  picture: string
+  image_url: string
   description: string
   custom_string1_state: string
   custom_string2_state: string

@@ -37,6 +37,9 @@ export interface ArtItemCreate {
   name: string
   tags: string[]
   author: string
+  custom_string1_name: string
+  custom_string2_name: string
+  custom_string3_name: string
 }
 export interface ArtDataItemResponse {
   _id: string
@@ -44,4 +47,10 @@ export interface ArtDataItemResponse {
   name: string
   tags: string[]
   author: string
+  custom_string1_name: string | null
+  custom_string2_name: string | null
+  custom_string3_name: string | null
+  custom_string1_state: boolean
+  custom_string2_state: boolean
+  custom_string3_state: boolean
 }

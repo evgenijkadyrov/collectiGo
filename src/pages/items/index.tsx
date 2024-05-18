@@ -9,23 +9,26 @@ import { RootState } from '@/app/store'
 import { LoadingSpinner } from '@components/Loader'
 import { ButtonCustom } from '@components/ButtonCustom'
 import { ModalCustom } from '@components/Modal'
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import { useActions } from '@/hooks/useActions'
 import { initialStateType, itemsThunk } from '@/app/items-reducer'
 import { ArtCollectionResponse } from '@/app/collections-reducer'
-import { generateItemsColumns } from '@/utils/generateCustomColomns.helper'
+import { useGenerateItemsColumns } from '@/utils/generateCustomColomns.helper'
 
-export const Items = () => {
+export const Items = memo(() => {
+  const [open, setOpen] = useState(false)
+
   const navigate = useNavigate()
-  const { fetchItems } = useActions(itemsThunk)
   const { collectionId } = useParams()
+
+  const { fetchItems } = useActions(itemsThunk)
+
   const { items, isLoading } = useSelector<RootState, initialStateType>((state) => state.items)
   const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn)
   const collection = useSelector<RootState, ArtCollectionResponse[]>(
     (state) => state.collections.collections
   ).find((col) => col._id === collectionId)
-  const [open, setOpen] = useState(false)
-
+  const { columns, titles } = useGenerateItemsColumns(collection)
   useEffect(() => {
     collectionId && fetchItems(collectionId)
   }, [])
@@ -42,6 +45,8 @@ export const Items = () => {
   if (isLoading) {
     return <LoadingSpinner />
   }
+
+  console.log(items)
   return (
     <Layout>
       <Content>
@@ -54,15 +59,12 @@ export const Items = () => {
               setOpen={setOpen}
               collectionId={collectionId}
               createItemMode={true}
+              titles={titles}
             />
-            <Table
-              dataSource={items}
-              onRow={handleRowClick}
-              columns={generateItemsColumns(collection)}
-            ></Table>
+            <Table dataSource={items} onRow={handleRowClick} columns={columns}></Table>
           </StyledContent>
         </Wrapper>
       </Content>
     </Layout>
   )
-}
+})

@@ -7,48 +7,43 @@ interface CustomColumns {
   key: string
 }
 
-export const getCustomColumns = (collection: ArtCollectionResponse): CustomColumns[] => {
+const getCustomColumns = (collection: ArtCollectionResponse): CustomColumns[] => {
   const customColumns: CustomColumns[] = []
   if (collection)
     if (collection?.custom_string1_state) {
       customColumns.push({
         title: collection.custom_string1_name,
-        dataIndex: collection.custom_string1_name,
-        key: collection.custom_string1_name,
+        dataIndex: 'custom_string1_name',
+        key: 'custom_string1_name',
       })
     }
 
   if (collection?.custom_string2_state) {
     customColumns.push({
       title: collection.custom_string2_name,
-      dataIndex: collection.custom_string2_name,
-      key: collection.custom_string2_name,
+      dataIndex: 'custom_string2_name',
+      key: 'custom_string2_name',
     })
   }
 
   if (collection?.custom_string3_state) {
     customColumns.push({
       title: collection.custom_string3_name,
-      dataIndex: collection.custom_string3_name,
-      key: collection.custom_string3_name,
+      dataIndex: 'custom_string3_name',
+      key: 'custom_string3_name',
     })
   }
 
   return customColumns
 }
-export const generateItemsColumns = (collection?: ArtCollectionResponse) => {
+export const useGenerateItemsColumns = (collection?: ArtCollectionResponse) => {
   const customColumns = collection ? getCustomColumns(collection) : []
 
-  return [
+  const columns = [
     {
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
-    },
-    {
-      title: 'Author',
-      dataIndex: 'author',
-      key: 'author',
     },
     {
       title: 'Tags',
@@ -82,5 +77,14 @@ export const generateItemsColumns = (collection?: ArtCollectionResponse) => {
         </Space>
       ),
     },
+    {
+      title: 'Owner collection',
+      dataIndex: 'author',
+      key: 'author',
+    },
   ]
+
+  const titles = customColumns.map((column) => column.title)
+
+  return { columns, titles }
 }

@@ -7,21 +7,23 @@ import { Form, Input, Select } from 'antd'
 interface FormItemCustomProps {
   collectionId: string | undefined
   setOpen: Dispatch<SetStateAction<boolean>>
+  titles?: string[]
 }
-export const FormItemCustom = memo(({ collectionId, setOpen }: FormItemCustomProps) => {
+export const FormItemCustom = memo(({ collectionId, setOpen, titles }: FormItemCustomProps) => {
   const [form] = Form.useForm()
   const { createItem } = useActions(itemsThunk)
   const handleSubmit = async (data: ArtItemCreate) => {
-    if (collectionId)
+    if (collectionId) {
       try {
-        debugger
         await createItem({ data, collectionId })
         setOpen(false)
       } catch (error: any) {
         console.log('error', error)
         throw new Error(`Error create collection: ${error.response.data.message}`)
       }
+    }
   }
+
   const onFinish = (values: ArtItemCreate) => {
     handleSubmit(values)
   }
@@ -38,15 +40,20 @@ export const FormItemCustom = memo(({ collectionId, setOpen }: FormItemCustomPro
       initialValues={{}}
       onFinish={onFinish}
     >
-      <Form.Item label="Name item" name={'name'}>
+      <Form.Item label={'Name'} name={'name'} key={'name'}>
         <Input />
       </Form.Item>
-      <Form.Item label="Author" name={'author'}>
+      <Form.Item label={'Author'} name={'author'} key={'author'}>
         <Input />
       </Form.Item>
-      <Form.Item label="Tags" name={'tags'}>
-        <Select mode="tags" />
+      <Form.Item label={'Tags'} name={'tags'} key={'tags'}>
+        <Select mode={'tags'} />
       </Form.Item>
+      {titles?.map((fieldName, index) => (
+        <Form.Item label={fieldName} name={`custom_string${index + 1}_name`} key={fieldName}>
+          <Input />
+        </Form.Item>
+      ))}
     </Form>
   )
 })

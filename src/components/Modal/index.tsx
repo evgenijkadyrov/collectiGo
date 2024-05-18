@@ -12,9 +12,16 @@ interface ModalCustomProps {
   setOpen: Dispatch<SetStateAction<boolean>>
   collectionId?: string
   createItemMode: boolean
+  titles?: string[]
 }
 
-export const ModalCustom = ({ open, setOpen, collectionId, createItemMode }: ModalCustomProps) => {
+export const ModalCustom = ({
+  open,
+  setOpen,
+  collectionId,
+  createItemMode,
+  titles,
+}: ModalCustomProps) => {
   const [confirmLoading, setConfirmLoading] = useState(false)
 
   const { createCollection } = useActions(collectionsThunk)
@@ -53,7 +60,7 @@ export const ModalCustom = ({ open, setOpen, collectionId, createItemMode }: Mod
       {confirmLoading ? (
         <LoadingSpinner />
       ) : createItemMode ? (
-        <FormItemCustom setOpen={setOpen} collectionId={collectionId} />
+        <FormItemCustom setOpen={setOpen} collectionId={collectionId} titles={titles} />
       ) : (
         <FormCustom onSubmit={handleSubmit} />
       )}
