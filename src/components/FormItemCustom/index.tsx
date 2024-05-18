@@ -43,9 +43,7 @@ export const FormItemCustom = memo(({ collectionId, setOpen, titles }: FormItemC
       <Form.Item label={'Name'} name={'name'} key={'name'}>
         <Input />
       </Form.Item>
-      <Form.Item label={'Author'} name={'author'} key={'author'}>
-        <Input />
-      </Form.Item>
+
       <Form.Item label={'Tags'} name={'tags'} key={'tags'}>
         <Select mode={'tags'} />
       </Form.Item>

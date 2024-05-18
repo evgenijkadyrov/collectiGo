@@ -7,6 +7,7 @@ import { useActions } from '@/hooks/useActions'
 import { ArtCollectionResponse, collectionsThunk, CollectionsType } from '@/app/collections-reducer'
 import { LoadingSpinner } from '@components/Loader'
 import { itemsThunk } from '@/app/items-reducer'
+import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
 
 const { Column } = Table
 
@@ -31,12 +32,6 @@ export const TableCollections = memo(() => {
     [navigate]
   )
 
-  const isRecordInMyCollections = useCallback(
-    (recordId: string) => {
-      return myCollections?.includes(recordId)
-    },
-    [myCollections]
-  )
   const handleDeleteCollection = useCallback(
     (recordId: string, event: MouseEvent<HTMLElement>) => {
       event.stopPropagation()
@@ -64,7 +59,7 @@ export const TableCollections = memo(() => {
         title="Action"
         render={(_: any, record: ArtCollectionResponse) => (
           <Space size="middle">
-            {isRecordInMyCollections(record._id) && (
+            {compareRecordWithMyCollections(record._id, myCollections) && (
               <>
                 <a onClick={(event) => handleEditCollection(record._id, event)}>Edit</a>
                 <a onClick={(event) => handleDeleteCollection(record._id, event)}>Delete</a>

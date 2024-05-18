@@ -28,7 +28,7 @@ export const Items = memo(() => {
   const collection = useSelector<RootState, ArtCollectionResponse[]>(
     (state) => state.collections.collections
   ).find((col) => col._id === collectionId)
-  const { columns, titles } = useGenerateItemsColumns(collection)
+  const { columns, titles } = useGenerateItemsColumns(collection, navigate, collectionId)
   useEffect(() => {
     collectionId && fetchItems(collectionId)
   }, [])
@@ -39,6 +39,7 @@ export const Items = memo(() => {
       },
     }
   }
+
   const handleCreateItem = () => {
     setOpen(true)
   }
@@ -46,7 +47,6 @@ export const Items = memo(() => {
     return <LoadingSpinner />
   }
 
-  console.log(items)
   return (
     <Layout>
       <Content>

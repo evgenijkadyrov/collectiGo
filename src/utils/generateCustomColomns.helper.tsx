@@ -1,5 +1,12 @@
-import { Space, Tag } from 'antd'
+import { Tag } from 'antd'
 import { ArtCollectionResponse } from '@/app/collections-reducer'
+import { ArtDataItemResponse } from '@/data/data'
+import { MouseEvent, useCallback } from 'react'
+import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/app/store'
+import { useActions } from '@/hooks/useActions'
+import { itemsThunk } from '@/app/items-reducer'
 
 interface CustomColumns {
   title: string
@@ -36,9 +43,32 @@ const getCustomColumns = (collection: ArtCollectionResponse): CustomColumns[] =>
 
   return customColumns
 }
-export const useGenerateItemsColumns = (collection?: ArtCollectionResponse) => {
+
+export const useGenerateItemsColumns = (
+  collection?: ArtCollectionResponse,
+  navigate?: any,
+
+  collectionId?: string
+) => {
+  const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
+  const { deleteItem } = useActions(itemsThunk)
   const customColumns = collection ? getCustomColumns(collection) : []
 
+  const handleDeleteItem = useCallback(
+    (recordId: string, event: MouseEvent<HTMLElement>) => {
+      event.stopPropagation()
+      deleteItem({ itemId: recordId })
+    },
+    [deleteItem]
+  )
+
+  const handleEditItem = useCallback(
+    (recordId: string, event: MouseEvent<HTMLElement>) => {
+      event.stopPropagation()
+      navigate(`items/${recordId}/edit`)
+    },
+    [navigate, collectionId]
+  )
   const columns = [
     {
       title: 'Name',
@@ -70,11 +100,15 @@ export const useGenerateItemsColumns = (collection?: ArtCollectionResponse) => {
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
-      render: (_: any) => (
-        <Space size="middle">
-          <a>Edit</a>
-          <a>Delete</a>
-        </Space>
+      render: (_: any, record: ArtDataItemResponse) => (
+        <>
+          {compareRecordWithMyCollections(record.collection_id, myCollections) && (
+            <>
+              <a onClick={(event) => handleEditItem(record._id, event)}> Edit </a>
+              <a onClick={(event) => handleDeleteItem(record._id, event)}> Delete </a>
+            </>
+          )}
+        </>
       ),
     },
     {
@@ -86,5 +120,5 @@ export const useGenerateItemsColumns = (collection?: ArtCollectionResponse) => {
 
   const titles = customColumns.map((column) => column.title)
 
-  return { columns, titles }
+  return { columns, titles, handleEditItem, handleDeleteItem }
 }

@@ -12,7 +12,7 @@ import { Layout } from '@/common/Layout/Layout'
 
 const { Item } = Form
 
-export const EditPage = () => {
+export const EditCollectionPage = () => {
   const { collectionId } = useParams() as { collectionId: string }
   const { updateCollection } = useActions(collectionsThunk)
   const navigate = useNavigate()
@@ -39,7 +39,7 @@ export const EditPage = () => {
       <Wrapper>
         <Content>
           <Form onFinish={onFinish} initialValues={collection}>
-            <Item label="Title" name="title" rules={[{ required: true }]}>
+            <Item label="Name" name="name" rules={[{ required: true }]}>
               <Input />
             </Item>
             <Item label="Category" name="category" rules={[{ required: true }]}>
@@ -51,7 +51,7 @@ export const EditPage = () => {
                 }))}
               />
             </Item>
-            <Item label="Picture" name="picture" rules={[{ required: true }]}>
+            <Item label="Image" name="image_url" rules={[{ required: true }]}>
               <Input />
             </Item>
             <Item>

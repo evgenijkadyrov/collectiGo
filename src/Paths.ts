@@ -6,4 +6,5 @@ export const Paths = {
   items: '/:collectionId/items',
   item: '/:collectionId/items/:itemId',
   editCollection: '/:collectionId/edit',
+  editItem: '/:collectionId/items/:itemId/edit',
 }

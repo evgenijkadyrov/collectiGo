@@ -9,7 +9,8 @@ import { store } from '@/app/store'
 import { Paths } from '@/Paths'
 import { Login } from '@/pages/login'
 import { Register } from '@/pages/registration'
-import { EditPage } from '@/pages/edit'
+import { EditCollectionPage } from '@/pages/editCollection'
+import { EditItemPage } from '@/pages/editItem'
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,11 @@ const router = createBrowserRouter([
   },
   {
     path: Paths.editCollection,
-    element: <EditPage />,
+    element: <EditCollectionPage />,
+  },
+  {
+    path: Paths.editItem,
+    element: <EditItemPage />,
   },
 ])
 ReactDOM.createRoot(document.getElementById('root')!).render(
