@@ -5,11 +5,11 @@ import { useParams } from 'react-router-dom'
 import { Card, Tag } from 'antd'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
-import { ArtDataItemResponse } from '@/data/data'
+import { ItemDataResponse } from '@/data/data'
 
 export const Item = () => {
   const { itemId } = useParams()
-  const items = useSelector<RootState, ArtDataItemResponse[]>((state) => state.items.items)
+  const items = useSelector<RootState, ItemDataResponse[]>((state) => state.items.items)
   const item = items.find((item) => item._id === itemId)
   return (
     <Layout>

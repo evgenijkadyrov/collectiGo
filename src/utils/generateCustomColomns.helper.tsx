@@ -1,6 +1,6 @@
 import { Tag } from 'antd'
 import { ArtCollectionResponse } from '@/app/collections-reducer'
-import { ArtDataItemResponse } from '@/data/data'
+import { ItemDataResponse } from '@/data/data'
 import { MouseEvent, useCallback } from 'react'
 import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
 import { useSelector } from 'react-redux'
@@ -100,7 +100,7 @@ export const useGenerateItemsColumns = (
       title: 'Action',
       dataIndex: 'action',
       key: 'action',
-      render: (_: any, record: ArtDataItemResponse) => (
+      render: (_: any, record: ItemDataResponse) => (
         <>
           {compareRecordWithMyCollections(record.collection_id, myCollections) && (
             <>
@@ -113,8 +113,8 @@ export const useGenerateItemsColumns = (
     },
     {
       title: 'Owner collection',
-      dataIndex: 'author',
-      key: 'author',
+      dataIndex: 'createdBy',
+      key: 'createdBy',
     },
   ]
 

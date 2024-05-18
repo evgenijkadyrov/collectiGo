@@ -7,8 +7,8 @@ import { ArtCollectionResponse, collectionsThunk } from '@/app/collections-reduc
 import { useActions } from '@/hooks/useActions'
 import { LoadingSpinner } from '@components/Loader'
 import { Paths } from '@/Paths'
-import { ArtCollectionCreate, collectionsCategory } from '@/data/data'
 import { Layout } from '@/common/Layout/Layout'
+import { ArtCollectionCreate, collectionsCategory } from '@/types/interfaces'
 
 const { Item } = Form
 

@@ -1,8 +1,8 @@
-import { ArtCollectionCreate, CategoryType } from '@/data/data'
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { configApi, instance } from '@/api/api'
 import { RootState } from '@/app/store'
 import { message } from 'antd'
+import { ArtCollectionCreate, CategoryType } from '@/types/interfaces'
 
 export interface ArtCollectionResponse {
   _id: string
@@ -18,9 +18,9 @@ export interface ArtCollectionResponse {
   custom_string3_name: string
 }
 
-const fetchCollections = createAsyncThunk('auth/fetchCollections', async () => {
+const fetchCollections = createAsyncThunk('collections/fetchCollections', async () => {
   try {
-    const res = await instance.get<ArtCollectionResponse[]>('/auth/collections')
+    const res = await instance.get<ArtCollectionResponse[]>('/collections/collections')
     return res.data
   } catch (error: any) {
     console.log('error', error)
@@ -31,10 +31,10 @@ const createCollection = createAsyncThunk<
   { collection: ArtCollectionResponse; message: string },
   { data: ArtCollectionCreate },
   { state: RootState }
->('auth/collections', async (arg, thunkAPI) => {
+>('collections/collections', async (arg, thunkAPI) => {
   try {
     const { token } = thunkAPI.getState().auth
-    const res = await instance.post('/auth/collections', arg.data, configApi(token))
+    const res = await instance.post('/collections/collections', arg.data, configApi(token))
     return res.data
   } catch (error: any) {
     throw new Error(`Error collection: ${error.response.data.message}`)
@@ -44,10 +44,13 @@ const deleteCollection = createAsyncThunk<
   { message: string },
   { collectionId: string },
   { state: RootState }
->('auth/deleteCollection', async (arg, thunkAPI) => {
+>('collections/deleteCollection', async (arg, thunkAPI) => {
   try {
     const { token } = thunkAPI.getState().auth
-    const res = await instance.delete(`/auth/collections/${arg.collectionId}`, configApi(token))
+    const res = await instance.delete(
+      `/collections/collections/${arg.collectionId}`,
+      configApi(token)
+    )
     return res.data
   } catch (error: any) {
     throw new Error(`Error deleting collection: ${error.response.data.message}`)
@@ -57,11 +60,11 @@ const updateCollection = createAsyncThunk<
   { collection: ArtCollectionResponse; message: string },
   { collectionId: string; collectionData: Partial<ArtCollectionResponse> },
   { state: RootState }
->('auth/updateCollection', async (arg, thunkAPI) => {
+>('collections/updateCollection', async (arg, thunkAPI) => {
   try {
     const { token } = thunkAPI.getState().auth
     const res = await instance.put(
-      `/auth/collections/${arg.collectionId}`,
+      `/collections/collections/${arg.collectionId}`,
       arg.collectionData,
       configApi(token)
     )

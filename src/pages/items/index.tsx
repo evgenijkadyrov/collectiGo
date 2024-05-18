@@ -2,7 +2,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Table } from 'antd'
 import { Layout } from '@/common/Layout/Layout'
 import { Content, StyledContent, Wrapper } from '@/pages/items/styles'
-import { ArtDataItem } from '@/data/data'
+import { ItemData } from '@/data/data'
 import { TitleGallery } from '@/common/TitleForGallery'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
@@ -32,7 +32,7 @@ export const Items = memo(() => {
   useEffect(() => {
     collectionId && fetchItems(collectionId)
   }, [])
-  const handleRowClick = (record: ArtDataItem) => {
+  const handleRowClick = (record: ItemData) => {
     return {
       onClick: () => {
         navigate(`items/${record._id}`)

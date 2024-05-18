@@ -20,6 +20,7 @@ export const TableCollections = memo(() => {
   const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
   const { deleteCollection } = useActions(collectionsThunk)
   const { fetchItems } = useActions(itemsThunk)
+
   const handleRowClick = useCallback(
     (record: ArtCollectionResponse) => {
       return {

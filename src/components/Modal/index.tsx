@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useState } from 'react'
 import { Button, Modal } from 'antd'
-import { FormCustom } from '@components/FormCustom/index.'
+import { FormCustom } from '@components/FormCollectionCustom/index.'
 import { collectionsThunk } from '@/app/collections-reducer'
 import { useActions } from '@/hooks/useActions'
-import { ArtCollectionCreate } from '@/data/data'
 import { LoadingSpinner } from '@components/Loader'
 import { FormItemCustom } from '@components/FormItemCustom'
+import { ArtCollectionCreate } from '@/types/interfaces'
 
 interface ModalCustomProps {
   open: boolean

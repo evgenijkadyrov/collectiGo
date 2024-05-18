@@ -1,8 +1,8 @@
 import { CloseOutlined } from '@ant-design/icons'
 import { Button, Form, Input, Select, Space } from 'antd'
-import { ArtCollectionCreate, collectionsCategory } from '@/data/data'
 import { memo } from 'react'
 import TextArea from 'antd/es/input/TextArea'
+import { ArtCollectionCreate, collectionsCategory } from '@/types/interfaces'
 
 interface FormCustomProps {
   onSubmit: (values: ArtCollectionCreate) => void
@@ -49,9 +49,6 @@ export const FormCustom = memo(({ onSubmit }: FormCustomProps) => {
           <div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
             {fields.map((field) => (
               <Space key={field.key}>
-                {/*<Form.Item noStyle name={[field.name, 'field']}>*/}
-                {/*  <input type="hidden" value={true} />*/}
-                {/*</Form.Item>*/}
                 <Form.Item noStyle name={[field.name, 'name']}>
                   <Input placeholder="enter field name" />
                 </Form.Item>
@@ -63,7 +60,7 @@ export const FormCustom = memo(({ onSubmit }: FormCustomProps) => {
               </Space>
             ))}
             <Button type="dashed" onClick={() => add()} block>
-              + Add Item
+              + Add Item field
             </Button>
           </div>
         )}

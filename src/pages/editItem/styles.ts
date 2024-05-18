@@ -9,10 +9,11 @@ export const Wrapper = styled.div`
   flex: 1;
 `
 export const Content = styled.main`
-  width: 70%;
+  width: 600px;
   min-height: ${window.innerHeight - 212}px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 `
