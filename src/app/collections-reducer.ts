@@ -2,25 +2,11 @@ import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs
 import { configApi, instance } from '@/api/api'
 import { RootState } from '@/app/store'
 import { message } from 'antd'
-import { ArtCollectionCreate, CategoryType } from '@/types/interfaces'
-
-export interface ArtCollectionResponse {
-  _id: string
-  name: string
-  category: CategoryType
-  image_url: string
-  description: string
-  custom_string1_state: string
-  custom_string2_state: string
-  custom_string3_state: string
-  custom_string1_name: string
-  custom_string2_name: string
-  custom_string3_name: string
-}
+import { ArtCollectionCreate, ArtCollectionResponse } from '@/types/interfaces'
 
 const fetchCollections = createAsyncThunk('collections/fetchCollections', async () => {
   try {
-    const res = await instance.get<ArtCollectionResponse[]>('/collections/collections')
+    const res = await instance.get<ArtCollectionResponse[]>('/collections')
     return res.data
   } catch (error: any) {
     console.log('error', error)
@@ -34,7 +20,7 @@ const createCollection = createAsyncThunk<
 >('collections/collections', async (arg, thunkAPI) => {
   try {
     const { token } = thunkAPI.getState().auth
-    const res = await instance.post('/collections/collections', arg.data, configApi(token))
+    const res = await instance.post('/collections', arg.data, configApi(token))
     return res.data
   } catch (error: any) {
     throw new Error(`Error collection: ${error.response.data.message}`)
@@ -47,10 +33,7 @@ const deleteCollection = createAsyncThunk<
 >('collections/deleteCollection', async (arg, thunkAPI) => {
   try {
     const { token } = thunkAPI.getState().auth
-    const res = await instance.delete(
-      `/collections/collections/${arg.collectionId}`,
-      configApi(token)
-    )
+    const res = await instance.delete(`/collections/${arg.collectionId}`, configApi(token))
     return res.data
   } catch (error: any) {
     throw new Error(`Error deleting collection: ${error.response.data.message}`)
@@ -64,7 +47,7 @@ const updateCollection = createAsyncThunk<
   try {
     const { token } = thunkAPI.getState().auth
     const res = await instance.put(
-      `/collections/collections/${arg.collectionId}`,
+      `/collections/${arg.collectionId}`,
       arg.collectionData,
       configApi(token)
     )

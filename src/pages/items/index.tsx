@@ -12,12 +12,11 @@ import { ModalCustom } from '@components/Modal'
 import { memo, useEffect, useState } from 'react'
 import { useActions } from '@/hooks/useActions'
 import { initialStateType, itemsThunk } from '@/app/items-reducer'
-import { ArtCollectionResponse } from '@/app/collections-reducer'
 import { useGenerateItemsColumns } from '@/utils/generateCustomColomns.helper'
+import { ArtCollectionResponse } from '@/types/interfaces'
 
 export const Items = memo(() => {
   const [open, setOpen] = useState(false)
-
   const navigate = useNavigate()
   const { collectionId } = useParams()
 

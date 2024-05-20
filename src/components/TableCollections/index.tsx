@@ -4,10 +4,11 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { memo, MouseEvent, useCallback } from 'react'
 import { useActions } from '@/hooks/useActions'
-import { ArtCollectionResponse, collectionsThunk, CollectionsType } from '@/app/collections-reducer'
+import { collectionsThunk, CollectionsType } from '@/app/collections-reducer'
 import { LoadingSpinner } from '@components/Loader'
 import { itemsThunk } from '@/app/items-reducer'
 import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
+import { ArtCollectionResponse } from '@/types/interfaces'
 
 const { Column } = Table
 
@@ -52,9 +53,34 @@ export const TableCollections = memo(() => {
   }
   return (
     <Table dataSource={collections} onRow={handleRowClick}>
-      <Column title="Name collection" dataIndex="name" />
-      <Column title="Category" dataIndex="category" />
-      <Column title="Image" dataIndex="image_url" />
+      <Column
+        title="Name collection"
+        dataIndex="name"
+        sorter={(a: ArtCollectionResponse, b: ArtCollectionResponse) =>
+          a.name.localeCompare(b.name)
+        }
+      />
+      <Column
+        title="Category"
+        dataIndex="category"
+        sorter={(a: ArtCollectionResponse, b: ArtCollectionResponse) =>
+          a.category.localeCompare(b.category)
+        }
+      />
+      <Column
+        title="Image"
+        dataIndex="image_url"
+        render={(image_url: string) => (
+          <img
+            src={image_url || 'src/assets/images/no_image.jpg'}
+            alt="Collection_image"
+            style={{ width: '80px', display: 'flex', justifyContent: 'center' }}
+            onError={(e) => {
+              e.currentTarget.src = 'src/assets/images/no_image.jpg'
+            }}
+          />
+        )}
+      />
       <Column title="Description" dataIndex="description" />
       <Column
         title="Action"

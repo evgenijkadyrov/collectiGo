@@ -3,12 +3,12 @@ import { Content, Wrapper } from './styles'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
-import { ArtCollectionResponse, collectionsThunk } from '@/app/collections-reducer'
+import { collectionsThunk } from '@/app/collections-reducer'
 import { useActions } from '@/hooks/useActions'
 import { LoadingSpinner } from '@components/Loader'
 import { Paths } from '@/Paths'
 import { Layout } from '@/common/Layout/Layout'
-import { ArtCollectionCreate, collectionsCategory } from '@/types/interfaces'
+import { ArtCollectionCreate, ArtCollectionResponse, collectionsCategory } from '@/types/interfaces'
 
 const { Item } = Form
 

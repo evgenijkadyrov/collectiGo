@@ -1,5 +1,4 @@
 import { Tag } from 'antd'
-import { ArtCollectionResponse } from '@/app/collections-reducer'
 import { ItemDataResponse } from '@/data/data'
 import { MouseEvent, useCallback } from 'react'
 import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
@@ -7,6 +6,8 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { useActions } from '@/hooks/useActions'
 import { itemsThunk } from '@/app/items-reducer'
+import { ArtCollectionResponse } from '@/types/interfaces'
+import { SortOrder } from 'antd/es/table/interface'
 
 interface CustomColumns {
   title: string
@@ -74,6 +75,8 @@ export const useGenerateItemsColumns = (
       title: 'Name',
       dataIndex: 'name',
       key: 'name',
+      sorter: (a: ItemDataResponse, b: ItemDataResponse) => a.name.localeCompare(b.name),
+      sortDirections: ['ascend', 'descend'] as SortOrder[],
     },
     {
       title: 'Tags',

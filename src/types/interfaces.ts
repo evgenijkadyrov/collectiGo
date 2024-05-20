@@ -1,5 +1,3 @@
-import { ArtCollectionResponse } from '@/app/collections-reducer'
-
 export const collectionsCategory: CategoryType[] = [
   'Coins',
   'Stamps',
@@ -19,6 +17,20 @@ export type CategoryType =
   | 'Antiques'
   | 'Comic Books'
   | 'Music Records'
+
+export interface ArtCollectionResponse {
+  _id: string
+  name: string
+  category: CategoryType
+  image_url: string
+  description: string
+  custom_string1_state: string
+  custom_string2_state: string
+  custom_string3_state: string
+  custom_string1_name: string
+  custom_string2_name: string
+  custom_string3_name: string
+}
 
 export interface ArtCollection extends Omit<ArtCollectionResponse, '_id'> {}
 
