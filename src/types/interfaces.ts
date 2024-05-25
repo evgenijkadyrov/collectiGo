@@ -7,6 +7,7 @@ export const collectionsCategory: CategoryType[] = [
   'Antiques',
   'Comic Books',
   'Music Records',
+  'Others',
 ]
 export type CategoryType =
   | 'Coins'
@@ -17,6 +18,7 @@ export type CategoryType =
   | 'Antiques'
   | 'Comic Books'
   | 'Music Records'
+  | 'Others'
 
 export interface ArtCollectionResponse {
   _id: string

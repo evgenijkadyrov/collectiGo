@@ -5,7 +5,7 @@ import { TitlePage } from '@/common/TitlePage'
 
 import { StyledContent, Wrapper } from './styles'
 import { TableCollections } from '@components/TableCollections'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useActions } from '@/hooks/useActions'
 import { collectionsThunk } from '@/app/collections-reducer'
 import { ButtonCustom } from '@components/ButtonCustom'
@@ -21,8 +21,9 @@ export const Content = () => {
   const collections = useSelector<RootState, ArtCollectionResponse[]>(
     (state) => state.collections.collections
   )
+  const [search, setSearch] = useState('')
   const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn)
-
+  const sortedBiggestCollections = useMemo(() => sortBiggestCollections(collections), [])
   useEffect(() => {
     fetchCollections({})
   }, [])
@@ -30,18 +31,24 @@ export const Content = () => {
   const handleCreateCollection = () => {
     setOpen(true)
   }
-
+  useEffect(() => {
+    fetchCollections({ search })
+  }, [search])
+  const handleSearch = (value: string) => {
+    setSearch(value)
+    console.log(value)
+  }
   return (
     <Wrapper>
       <StyledContent>
         <TitlePage firstLine={'Your favorite collections '} isActive={true} />
-        <SearchArtworkForm setSearchValue={() => {}} />
+        <SearchArtworkForm setSearchValue={handleSearch} />
         <TitleGallery firstLineText={'Last added collections'} />
         {isLoggedIn && <ButtonCustom onClick={handleCreateCollection}>Create</ButtonCustom>}
         <ModalCustom open={open} setOpen={setOpen} createItemMode={false} />
         <TableCollections collections={collections} />
         <TitleGallery firstLineText={'Biggest collections'} />
-        <TableCollections collections={sortBiggestCollections(collections)} />
+        <TableCollections collections={sortedBiggestCollections} isPagination={false} />
       </StyledContent>
     </Wrapper>
   )

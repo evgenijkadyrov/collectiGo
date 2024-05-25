@@ -1,4 +1,4 @@
-import { Space, Table } from 'antd'
+import { Space, Table, TablePaginationConfig } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
@@ -13,8 +13,9 @@ import { ArtCollectionResponse } from '@/types/interfaces'
 const { Column } = Table
 interface TableCollectionsProps {
   collections: ArtCollectionResponse[]
+  isPagination?: false | TablePaginationConfig | undefined
 }
-export const TableCollections = memo(({ collections }: TableCollectionsProps) => {
+export const TableCollections = memo(({ collections, isPagination }: TableCollectionsProps) => {
   const navigate = useNavigate()
   const isLoading = useSelector<RootState, boolean>((state) => state.collections.isLoading)
   const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
@@ -51,7 +52,7 @@ export const TableCollections = memo(({ collections }: TableCollectionsProps) =>
     return <LoadingSpinner />
   }
   return (
-    <Table dataSource={collections} onRow={handleRowClick}>
+    <Table dataSource={collections} onRow={handleRowClick} pagination={isPagination}>
       <Column
         title="Name collection"
         dataIndex="name"

@@ -5,9 +5,12 @@ import { message } from 'antd'
 import { ArtCollectionCreate, ArtCollectionResponse } from '@/types/interfaces'
 import { itemsThunk } from '@/app/items-reducer'
 
-const fetchCollections = createAsyncThunk('collections/fetchCollections', async () => {
+const fetchCollections = createAsyncThunk('collections/fetchCollections', async (arg) => {
   try {
-    const res = await instance.get<ArtCollectionResponse[]>('/collections')
+    const res = await instance.get<ArtCollectionResponse[]>('/collections', {
+      params: { search: arg },
+    })
+
     return res.data
   } catch (error: any) {
     console.log('error', error)
@@ -71,7 +74,7 @@ const collectionsSlice = createSlice({
   name: 'collections',
   initialState,
   reducers: {
-    changeTodolistFilter: () => {},
+    setSearch: () => {},
   },
   extraReducers: (builder: ActionReducerMapBuilder<CollectionsType>) => {
     builder
@@ -147,7 +150,7 @@ const collectionsSlice = createSlice({
 })
 
 export const collections = collectionsSlice.reducer
-export const collectionsActions = collectionsSlice.actions
+export const { setSearch } = collectionsSlice.actions
 export const collectionsThunk = {
   fetchCollections,
   createCollection,
