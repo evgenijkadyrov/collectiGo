@@ -97,6 +97,11 @@ const slice = createSlice({
       .addCase(collectionsThunk.createCollection.fulfilled, (state, action) => {
         state.user.collections.unshift(action.payload.collection._id)
       })
+      .addCase(collectionsThunk.deleteCollection.fulfilled, (state, action) => {
+        state.user.collections = state.user.collections.filter(
+          (collection) => collection !== action.meta.arg.collectionId
+        )
+      })
   },
 })
 

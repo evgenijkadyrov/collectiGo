@@ -56,9 +56,9 @@ export const useGenerateItemsColumns = (
   const customColumns = collection ? getCustomColumns(collection) : []
 
   const handleDeleteItem = useCallback(
-    (recordId: string, event: MouseEvent<HTMLElement>) => {
+    (recordId: string, collectionId: string, event: MouseEvent<HTMLElement>) => {
       event.stopPropagation()
-      deleteItem({ itemId: recordId })
+      deleteItem({ itemId: recordId, collectionId })
     },
     [deleteItem]
   )
@@ -108,7 +108,10 @@ export const useGenerateItemsColumns = (
           {compareRecordWithMyCollections(record.collection_id, myCollections) && (
             <>
               <a onClick={(event) => handleEditItem(record._id, event)}> Edit </a>
-              <a onClick={(event) => handleDeleteItem(record._id, event)}> Delete </a>
+              <a onClick={(event) => handleDeleteItem(record._id, record.collection_id, event)}>
+                {' '}
+                Delete{' '}
+              </a>
             </>
           )}
         </>

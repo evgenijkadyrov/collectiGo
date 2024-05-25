@@ -3,6 +3,7 @@ import { configApi, instance } from '@/api/api'
 import { RootState } from '@/app/store'
 import { message } from 'antd'
 import { ArtCollectionCreate, ArtCollectionResponse } from '@/types/interfaces'
+import { itemsThunk } from '@/app/items-reducer'
 
 const fetchCollections = createAsyncThunk('collections/fetchCollections', async () => {
   try {
@@ -123,6 +124,24 @@ const collectionsSlice = createSlice({
       .addCase(updateCollection.rejected, (state, action) => {
         state.isLoading = false
         message.error(action.error.message)
+      })
+      .addCase(itemsThunk.deleteItem.fulfilled, (state, action) => {
+        const collectionIndex = state.collections.findIndex(
+          (collection) => collection._id === action.meta.arg.collectionId
+        )
+        if (collectionIndex !== -1) {
+          state.collections[collectionIndex].items = state.collections[
+            collectionIndex
+          ].items.filter((el) => el !== action.meta.arg.itemId)
+        }
+      })
+      .addCase(itemsThunk.createItem.fulfilled, (state, action) => {
+        const collectionIndex = state.collections.findIndex(
+          (collection) => collection._id === action.payload.item.collection_id
+        )
+        if (collectionIndex !== -1) {
+          state.collections[collectionIndex].items.push(action.payload.item._id)
+        }
       })
   },
 })

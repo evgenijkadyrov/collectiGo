@@ -1,4 +1,4 @@
-import { ItemDataResponse, ItemDataCreate } from '@/data/data'
+import { ItemDataCreate, ItemDataResponse } from '@/data/data'
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { configApi, instance } from '@/api/api'
 import { RootState } from '@/app/store'
@@ -39,18 +39,22 @@ const updateItem = createAsyncThunk<
     throw new Error(`Error updating item: ${error.response.data.message}`)
   }
 })
-const deleteItem = createAsyncThunk<{ message: string }, { itemId: string }, { state: RootState }>(
-  'items/deleteItem',
-  async (arg, thunkAPI) => {
-    try {
-      const { token } = thunkAPI.getState().auth
-      const res = await instance.delete(`/items/${arg.itemId}`, configApi(token))
-      return res.data
-    } catch (error: any) {
-      throw new Error(`Error deleting collection: ${error.response.data.message}`)
-    }
+const deleteItem = createAsyncThunk<
+  { message: string },
+  { itemId: string; collectionId: string },
+  { state: RootState }
+>('items/deleteItem', async (arg, thunkAPI) => {
+  try {
+    const { token } = thunkAPI.getState().auth
+    const res = await instance.delete(`/items/${arg.itemId}`, {
+      data: { collectionId: arg.collectionId },
+      ...configApi(token),
+    })
+    return res.data
+  } catch (error: any) {
+    throw new Error(`Error deleting collection: ${error.response.data.message}`)
   }
-)
+})
 
 export interface initialStateType {
   isLoading: boolean

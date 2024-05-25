@@ -12,11 +12,15 @@ import { ButtonCustom } from '@components/ButtonCustom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { ModalCustom } from '@components/Modal'
+import { ArtCollectionResponse } from '@/types/interfaces'
+import { sortBiggestCollections } from '@/utils/sortBiggestCollections'
 
 export const Content = () => {
   const [open, setOpen] = useState(false)
   const { fetchCollections } = useActions(collectionsThunk)
-
+  const collections = useSelector<RootState, ArtCollectionResponse[]>(
+    (state) => state.collections.collections
+  )
   const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn)
 
   useEffect(() => {
@@ -32,11 +36,12 @@ export const Content = () => {
       <StyledContent>
         <TitlePage firstLine={'Your favorite collections '} isActive={true} />
         <SearchArtworkForm setSearchValue={() => {}} />
-        <TitleGallery firstLineText={'Last added items'} />
+        <TitleGallery firstLineText={'Last added collections'} />
         {isLoggedIn && <ButtonCustom onClick={handleCreateCollection}>Create</ButtonCustom>}
         <ModalCustom open={open} setOpen={setOpen} createItemMode={false} />
-        <TableCollections />
-        <TitleGallery firstLineText={'Biggest collections'} secondLineText={'Last added items'} />
+        <TableCollections collections={collections} />
+        <TitleGallery firstLineText={'Biggest collections'} />
+        <TableCollections collections={sortBiggestCollections(collections)} />
       </StyledContent>
     </Wrapper>
   )

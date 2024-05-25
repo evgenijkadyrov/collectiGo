@@ -4,20 +4,19 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { memo, MouseEvent, useCallback } from 'react'
 import { useActions } from '@/hooks/useActions'
-import { collectionsThunk, CollectionsType } from '@/app/collections-reducer'
+import { collectionsThunk } from '@/app/collections-reducer'
 import { LoadingSpinner } from '@components/Loader'
 import { itemsThunk } from '@/app/items-reducer'
 import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
 import { ArtCollectionResponse } from '@/types/interfaces'
 
 const { Column } = Table
-
-export const TableCollections = memo(() => {
+interface TableCollectionsProps {
+  collections: ArtCollectionResponse[]
+}
+export const TableCollections = memo(({ collections }: TableCollectionsProps) => {
   const navigate = useNavigate()
-  const { collections, isLoading } = useSelector<RootState, CollectionsType>((state) => ({
-    collections: state.collections.collections,
-    isLoading: state.collections.isLoading,
-  }))
+  const isLoading = useSelector<RootState, boolean>((state) => state.collections.isLoading)
   const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
   const { deleteCollection } = useActions(collectionsThunk)
   const { fetchItems } = useActions(itemsThunk)

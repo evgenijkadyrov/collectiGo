@@ -30,6 +30,7 @@ export interface ArtCollectionResponse {
   custom_string1_name: string
   custom_string2_name: string
   custom_string3_name: string
+  items: string[]
 }
 
 export interface ArtCollection extends Omit<ArtCollectionResponse, '_id'> {}
