@@ -7,15 +7,15 @@ import { SearchIcon } from '@/assets/icons/SearchIcon'
 
 import { FieldStyled, SearchFormContainer, StyledButton, StyledForm } from './styles'
 
-interface SearchArtworkProps {
+interface SearchCollectionsProps {
   setSearchValue: (value: string) => void
 }
 
-export const SearchArtworkForm = memo(({ setSearchValue }: SearchArtworkProps) => {
+export const SearchCollectionsForm = memo(({ setSearchValue }: SearchCollectionsProps) => {
   const pattern = /^[a-zA-Z0-9\s]*$/
   const validationSchema = Yup.object().shape({
     search: Yup.string()
-      .max(15, 'Maximum 15 symbols')
+      .max(10, 'Maximum 15 symbols')
       .matches(pattern, 'Invalid characters detected'),
   })
 
@@ -38,7 +38,7 @@ export const SearchArtworkForm = memo(({ setSearchValue }: SearchArtworkProps) =
             <FieldStyled
               type="text"
               name="search"
-              placeholder="Search artwork"
+              placeholder="Search"
               value={values.search}
               errors={errors.search}
               onChange={(event: ChangeEvent<HTMLInputElement>) => {

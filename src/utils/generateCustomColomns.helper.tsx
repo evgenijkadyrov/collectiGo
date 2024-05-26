@@ -1,12 +1,11 @@
 import { Tag } from 'antd'
-import { ItemDataResponse } from '@/data/data'
 import { MouseEvent, useCallback } from 'react'
 import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { useActions } from '@/hooks/useActions'
 import { itemsThunk } from '@/app/items-reducer'
-import { ArtCollectionResponse } from '@/types/interfaces'
+import { ArtCollectionResponse, ItemDataResponse } from '@/types/interfaces'
 import { SortOrder } from 'antd/es/table/interface'
 
 interface CustomColumns {

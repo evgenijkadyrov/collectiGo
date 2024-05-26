@@ -105,5 +105,5 @@ const slice = createSlice({
 
 export const auth = slice.reducer
 
-export const { clearMessage, logout } = slice.actions
+export const { logout } = slice.actions
 export const authThunk = { login, register }

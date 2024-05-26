@@ -1,8 +1,8 @@
-import { ItemDataCreate, ItemDataResponse } from '@/data/data'
 import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import { configApi, instance } from '@/api/api'
 import { RootState } from '@/app/store'
 import { message } from 'antd'
+import { ItemDataCreate, ItemDataResponse } from '@/types/interfaces'
 
 const fetchItems = createAsyncThunk('items/fetchItems', async (collectionId: string) => {
   try {

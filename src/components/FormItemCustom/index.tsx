@@ -1,8 +1,8 @@
 import { Dispatch, memo, SetStateAction } from 'react'
 import { useActions } from '@/hooks/useActions'
 import { itemsThunk } from '@/app/items-reducer'
-import { ItemDataCreate } from '@/data/data'
 import { ItemForm } from '@components/FormItemCustom/Form'
+import { ItemDataCreate } from '@/types/interfaces'
 
 interface FormItemCustomProps {
   collectionId: string | undefined

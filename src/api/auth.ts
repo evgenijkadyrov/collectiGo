@@ -1,26 +1,12 @@
-import { DataRegisterType } from '@/hooks/useRegisterUser'
-import { instance } from '@/api/api'
+import { configApi, instance } from '@/api/api'
 
 export interface UserDataType {
   email: string
   password: string
 }
 export const getUsers = async (token: string): Promise<any> => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  }
-  const users = await instance.get('/auth/users', config)
+  const users = await instance.get('/auth/users', configApi(token))
   return users.data
-}
-
-export const registerUser = async (userData: DataRegisterType): Promise<void> => {
-  try {
-    await instance.post('/auth/register', userData)
-  } catch (error: any) {
-    throw new Error(`Error register user: ${error.response.data.message}`)
-  }
 }
 
 export const deleteUsers = async (usersEmail: string[]): Promise<void> => {

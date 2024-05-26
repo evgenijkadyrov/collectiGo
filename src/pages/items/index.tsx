@@ -2,7 +2,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Table } from 'antd'
 import { Layout } from '@/common/Layout/Layout'
 import { Content, StyledContent, Wrapper } from '@/pages/items/styles'
-import { ItemData } from '@/data/data'
 import { TitleGallery } from '@/common/TitleForGallery'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
@@ -13,7 +12,7 @@ import { memo, useEffect, useState } from 'react'
 import { useActions } from '@/hooks/useActions'
 import { initialStateType, itemsThunk } from '@/app/items-reducer'
 import { useGenerateItemsColumns } from '@/utils/generateCustomColomns.helper'
-import { ArtCollectionResponse } from '@/types/interfaces'
+import { ArtCollectionResponse, ItemData } from '@/types/interfaces'
 
 export const Items = memo(() => {
   const [open, setOpen] = useState(false)

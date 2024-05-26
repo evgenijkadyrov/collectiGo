@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { Card, Tag } from 'antd'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
-import { ItemDataResponse } from '@/data/data'
+import { ItemDataResponse } from '@/types/interfaces'
 
 export const Item = () => {
   const { itemId } = useParams()

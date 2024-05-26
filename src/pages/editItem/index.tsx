@@ -3,12 +3,11 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { useActions } from '@/hooks/useActions'
-import { ItemDataResponse, ItemDataCreate } from '@/data/data'
 import { Layout } from '@/common/Layout/Layout'
 import { itemsThunk } from '@/app/items-reducer'
 import { useGenerateItemsColumns } from '@/utils/generateCustomColomns.helper'
 import { ItemForm } from '@components/FormItemCustom/Form'
-import { ArtCollectionResponse } from '@/types/interfaces'
+import { ArtCollectionResponse, ItemDataCreate, ItemDataResponse } from '@/types/interfaces'
 
 export const EditItemPage = () => {
   const { itemId } = useParams() as { itemId: string }

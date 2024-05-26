@@ -22,14 +22,12 @@ export const BurgerMenu = ({ children, open, onClose }: MenuProps) => {
     }
 
     document.addEventListener('keydown', fn)
-
     return () => document.removeEventListener('keydown', fn)
   }, [onClose])
 
   return (
     <div>
       <Overlay onClick={onClose} role="presentation" onKeyPress={handleKeypress} open={open} />
-
       <MenuContainer open={open}>{children}</MenuContainer>
     </div>
   )

@@ -1,7 +1,7 @@
 import { Button, Form, Input, Select } from 'antd'
-import { ItemDataResponse, ItemDataCreate } from '@/data/data'
 import { LoadingSpinner } from '@components/Loader'
 import { useNavigate } from 'react-router-dom'
+import { ItemDataCreate, ItemDataResponse } from '@/types/interfaces'
 
 interface FormItemCustomProps {
   initialValues: ItemDataResponse | {}

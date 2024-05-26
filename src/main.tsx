@@ -11,6 +11,7 @@ import { Login } from '@/pages/login'
 import { Register } from '@/pages/registration'
 import { EditCollectionPage } from '@/pages/editCollection'
 import { EditItemPage } from '@/pages/editItem'
+import React from 'react'
 
 const router = createBrowserRouter([
   {
@@ -43,10 +44,10 @@ const router = createBrowserRouter([
   },
 ])
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  // <React.StrictMode>
-  <Provider store={store}>
-    <RouterProvider router={router} />
-    <GlobalStyles />
-  </Provider>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+      <GlobalStyles />
+    </Provider>
+  </React.StrictMode>
 )
