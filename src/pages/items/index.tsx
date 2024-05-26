@@ -3,44 +3,30 @@ import { Table } from 'antd'
 import { Layout } from '@/common/Layout/Layout'
 import { Content, StyledContent, Wrapper } from '@/pages/items/styles'
 import { TitleGallery } from '@/common/TitleForGallery'
-import { useSelector } from 'react-redux'
-import { RootState } from '@/app/store'
 import { LoadingSpinner } from '@components/Loader'
 import { ButtonCustom } from '@components/ButtonCustom'
 import { ModalCustom } from '@components/Modal'
-import { memo, useEffect, useState } from 'react'
+import { memo, useEffect } from 'react'
 import { useActions } from '@/hooks/useActions'
-import { initialStateType, itemsThunk } from '@/app/items-reducer'
+import { itemsThunk } from '@/app/items-reducer'
 import { useGenerateItemsColumns } from '@/utils/generateCustomColomns.helper'
-import { ArtCollectionResponse, ItemData } from '@/types/interfaces'
+import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
+import { useGetDataForItems } from '@/hooks/useGetDataForItems'
 
 export const Items = memo(() => {
-  const [open, setOpen] = useState(false)
   const navigate = useNavigate()
   const { collectionId } = useParams()
 
   const { fetchItems } = useActions(itemsThunk)
+  const { items, isLoading, collection, myCollectionsList, open, setOpen, handleCreateItem } =
+    useGetDataForItems(collectionId)
 
-  const { items, isLoading } = useSelector<RootState, initialStateType>((state) => state.items)
-  const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn)
-  const collection = useSelector<RootState, ArtCollectionResponse[]>(
-    (state) => state.collections.collections
-  ).find((col) => col._id === collectionId)
   const { columns, titles } = useGenerateItemsColumns(collection, navigate, collectionId)
+
   useEffect(() => {
     collectionId && fetchItems(collectionId)
   }, [])
-  const handleRowClick = (record: ItemData) => {
-    return {
-      onClick: () => {
-        navigate(`items/${record._id}`)
-      },
-    }
-  }
 
-  const handleCreateItem = () => {
-    setOpen(true)
-  }
   if (isLoading) {
     return <LoadingSpinner />
   }
@@ -51,7 +37,9 @@ export const Items = memo(() => {
         <Wrapper>
           <StyledContent>
             <TitleGallery firstLineText={'Collection '} />
-            {isLoggedIn && <ButtonCustom onClick={handleCreateItem}>Create</ButtonCustom>}
+            {compareRecordWithMyCollections(collectionId, myCollectionsList) && (
+              <ButtonCustom onClick={handleCreateItem}>Create</ButtonCustom>
+            )}
             <ModalCustom
               open={open}
               setOpen={setOpen}
@@ -59,7 +47,7 @@ export const Items = memo(() => {
               createItemMode={true}
               titles={titles}
             />
-            <Table dataSource={items} onRow={handleRowClick} columns={columns}></Table>
+            <Table dataSource={items} columns={columns}></Table>
           </StyledContent>
         </Wrapper>
       </Content>

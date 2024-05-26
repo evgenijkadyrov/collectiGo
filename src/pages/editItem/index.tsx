@@ -7,7 +7,7 @@ import { Layout } from '@/common/Layout/Layout'
 import { itemsThunk } from '@/app/items-reducer'
 import { useGenerateItemsColumns } from '@/utils/generateCustomColomns.helper'
 import { ItemForm } from '@components/FormItemCustom/Form'
-import { ArtCollectionResponse, ItemDataCreate, ItemDataResponse } from '@/types/interfaces'
+import { CollectionResponse, ItemDataCreate, ItemDataResponse } from '@/types/interfaces'
 
 export const EditItemPage = () => {
   const { itemId } = useParams() as { itemId: string }
@@ -18,7 +18,7 @@ export const EditItemPage = () => {
   )
 
   const isLoading = useSelector<RootState, boolean>((state) => state.items.isLoading)
-  const collection = useSelector<RootState, ArtCollectionResponse[]>(
+  const collection = useSelector<RootState, CollectionResponse[]>(
     (state) => state.collections.collections
   ).find((collection) => collection._id === item?.collection_id)
   const { titles } = useGenerateItemsColumns(collection)

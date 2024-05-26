@@ -20,7 +20,7 @@ export type CategoryType =
   | 'Music Records'
   | 'Others'
 
-export interface ArtCollectionResponse {
+export interface CollectionResponse {
   _id: string
   name: string
   category: CategoryType
@@ -35,7 +35,7 @@ export interface ArtCollectionResponse {
   items: string[]
 }
 
-export interface ArtCollection extends Omit<ArtCollectionResponse, '_id'> {}
+export interface ArtCollection extends Omit<CollectionResponse, '_id'> {}
 
 export interface ArtCollectionCreate extends Partial<ArtCollection> {
   optionalFields: { field: boolean; name: string }[]

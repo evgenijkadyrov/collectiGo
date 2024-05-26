@@ -3,6 +3,7 @@ import { useActions } from '@/hooks/useActions'
 import { itemsThunk } from '@/app/items-reducer'
 import { ItemForm } from '@components/FormItemCustom/Form'
 import { ItemDataCreate } from '@/types/interfaces'
+import { Form } from 'antd'
 
 interface FormItemCustomProps {
   collectionId: string | undefined
@@ -12,6 +13,7 @@ interface FormItemCustomProps {
 
 export const FormItemCustom = memo(({ collectionId, setOpen, titles }: FormItemCustomProps) => {
   const { createItem } = useActions(itemsThunk)
+  const [form] = Form.useForm()
 
   const handleSubmit = async (data: ItemDataCreate) => {
     if (collectionId) {
@@ -27,6 +29,7 @@ export const FormItemCustom = memo(({ collectionId, setOpen, titles }: FormItemC
 
   const onFinish = (values: ItemDataCreate) => {
     handleSubmit(values)
+    form.resetFields()
   }
 
   return (

@@ -44,7 +44,6 @@ export const ModalCustom = ({
 
   return (
     <Modal
-      title="Title"
       open={open}
       visible={open}
       confirmLoading={confirmLoading}

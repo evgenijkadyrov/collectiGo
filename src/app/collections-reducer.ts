@@ -2,12 +2,12 @@ import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from '@reduxjs
 import { configApi, instance } from '@/api/api'
 import { RootState } from '@/app/store'
 import { message } from 'antd'
-import { ArtCollectionCreate, ArtCollectionResponse } from '@/types/interfaces'
+import { ArtCollectionCreate, CollectionResponse } from '@/types/interfaces'
 import { itemsThunk } from '@/app/items-reducer'
 
 const fetchCollections = createAsyncThunk('collections/fetchCollections', async (arg) => {
   try {
-    const res = await instance.get<ArtCollectionResponse[]>('/collections', {
+    const res = await instance.get<CollectionResponse[]>('/collections', {
       params: { search: arg },
     })
 
@@ -18,7 +18,7 @@ const fetchCollections = createAsyncThunk('collections/fetchCollections', async 
   }
 })
 const createCollection = createAsyncThunk<
-  { collection: ArtCollectionResponse; message: string },
+  { collection: CollectionResponse; message: string },
   { data: ArtCollectionCreate },
   { state: RootState }
 >('collections/collections', async (arg, thunkAPI) => {
@@ -44,8 +44,8 @@ const deleteCollection = createAsyncThunk<
   }
 })
 const updateCollection = createAsyncThunk<
-  { collection: ArtCollectionResponse; message: string },
-  { collectionId: string; collectionData: Partial<ArtCollectionResponse> },
+  { collection: CollectionResponse; message: string },
+  { collectionId: string; collectionData: Partial<CollectionResponse> },
   { state: RootState }
 >('collections/updateCollection', async (arg, thunkAPI) => {
   try {
@@ -62,7 +62,7 @@ const updateCollection = createAsyncThunk<
 })
 
 export interface CollectionsType {
-  collections: ArtCollectionResponse[]
+  collections: CollectionResponse[]
   isLoading: boolean
 }
 

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { useActions } from '@/hooks/useActions'
 import { itemsThunk } from '@/app/items-reducer'
-import { ArtCollectionResponse, ItemDataResponse } from '@/types/interfaces'
+import { CollectionResponse, ItemDataResponse } from '@/types/interfaces'
 import { SortOrder } from 'antd/es/table/interface'
 
 interface CustomColumns {
@@ -14,7 +14,7 @@ interface CustomColumns {
   key: string
 }
 
-const getCustomColumns = (collection: ArtCollectionResponse): CustomColumns[] => {
+const getCustomColumns = (collection: CollectionResponse): CustomColumns[] => {
   const customColumns: CustomColumns[] = []
   if (collection)
     if (collection?.custom_string1_state) {
@@ -45,7 +45,7 @@ const getCustomColumns = (collection: ArtCollectionResponse): CustomColumns[] =>
 }
 
 export const useGenerateItemsColumns = (
-  collection?: ArtCollectionResponse,
+  collection?: CollectionResponse,
   navigate?: any,
 
   collectionId?: string

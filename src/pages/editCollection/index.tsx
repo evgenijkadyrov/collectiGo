@@ -7,7 +7,7 @@ import { collectionsThunk } from '@/app/collections-reducer'
 import { useActions } from '@/hooks/useActions'
 import { Paths } from '@/Paths'
 import { Layout } from '@/common/Layout/Layout'
-import { ArtCollectionCreate, ArtCollectionResponse } from '@/types/interfaces'
+import { ArtCollectionCreate, CollectionResponse } from '@/types/interfaces'
 import { FormCustom } from '@components/FormCollectionCustom/index.'
 import { LoadingSpinner } from '@components/Loader'
 
@@ -15,7 +15,7 @@ export const EditCollectionPage = () => {
   const { collectionId } = useParams() as { collectionId: string }
   const { updateCollection } = useActions(collectionsThunk)
   const navigate = useNavigate()
-  const collections = useSelector<RootState, ArtCollectionResponse[]>(
+  const collections = useSelector<RootState, CollectionResponse[]>(
     (state) => state.collections.collections
   )
   const isLoading = useSelector<RootState, boolean>((state) => state.collections.isLoading)

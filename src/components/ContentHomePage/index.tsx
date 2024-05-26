@@ -12,7 +12,7 @@ import { ButtonCustom } from '@components/ButtonCustom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { ModalCustom } from '@components/Modal'
-import { ArtCollectionResponse } from '@/types/interfaces'
+import { CollectionResponse } from '@/types/interfaces'
 import { sortBiggestCollections } from '@/utils/sortBiggestCollections'
 
 export const Content = memo(() => {
@@ -20,7 +20,7 @@ export const Content = memo(() => {
   const [search, setSearch] = useState('')
 
   const { fetchCollections } = useActions(collectionsThunk)
-  const collections = useSelector<RootState, ArtCollectionResponse[]>(
+  const collections = useSelector<RootState, CollectionResponse[]>(
     (state) => state.collections.collections
   )
 

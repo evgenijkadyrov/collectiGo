@@ -2,28 +2,31 @@ import { Space, Table, TablePaginationConfig } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
-import { memo, MouseEvent, useCallback } from 'react'
+import { memo, useCallback } from 'react'
 import { useActions } from '@/hooks/useActions'
-import { collectionsThunk } from '@/app/collections-reducer'
 import { LoadingSpinner } from '@components/Loader'
 import { itemsThunk } from '@/app/items-reducer'
 import { compareRecordWithMyCollections } from '@/utils/compareWithMyCollection'
-import { ArtCollectionResponse } from '@/types/interfaces'
+import { CollectionResponse } from '@/types/interfaces'
+import { useCollectionActions } from '@/hooks/useCollectionActions'
 
 const { Column } = Table
+
 interface TableCollectionsProps {
-  collections: ArtCollectionResponse[]
+  collections: CollectionResponse[]
   isPagination?: false | TablePaginationConfig | undefined
 }
+
 export const TableCollections = memo(({ collections, isPagination }: TableCollectionsProps) => {
   const navigate = useNavigate()
   const isLoading = useSelector<RootState, boolean>((state) => state.collections.isLoading)
   const myCollections = useSelector<RootState, string[]>((state) => state.auth.user.collections)
-  const { deleteCollection } = useActions(collectionsThunk)
+
+  const { handleEditCollection, handleDeleteCollection } = useCollectionActions()
   const { fetchItems } = useActions(itemsThunk)
 
   const handleRowClick = useCallback(
-    (record: ArtCollectionResponse) => {
+    (record: CollectionResponse) => {
       return {
         onClick: async () => {
           await fetchItems(record._id)
@@ -34,20 +37,6 @@ export const TableCollections = memo(({ collections, isPagination }: TableCollec
     [navigate]
   )
 
-  const handleDeleteCollection = useCallback(
-    (recordId: string, event: MouseEvent<HTMLElement>) => {
-      event.stopPropagation()
-      deleteCollection({ collectionId: recordId })
-    },
-    [deleteCollection]
-  )
-  const handleEditCollection = useCallback(
-    (recordId: string, event: MouseEvent<HTMLElement>) => {
-      event.stopPropagation()
-      navigate(`${recordId}/edit`)
-    },
-    [deleteCollection]
-  )
   if (isLoading) {
     return <LoadingSpinner />
   }
@@ -56,14 +45,12 @@ export const TableCollections = memo(({ collections, isPagination }: TableCollec
       <Column
         title="Name collection"
         dataIndex="name"
-        sorter={(a: ArtCollectionResponse, b: ArtCollectionResponse) =>
-          a.name.localeCompare(b.name)
-        }
+        sorter={(a: CollectionResponse, b: CollectionResponse) => a.name.localeCompare(b.name)}
       />
       <Column
         title="Category"
         dataIndex="category"
-        sorter={(a: ArtCollectionResponse, b: ArtCollectionResponse) =>
+        sorter={(a: CollectionResponse, b: CollectionResponse) =>
           a.category.localeCompare(b.category)
         }
       />
@@ -84,7 +71,7 @@ export const TableCollections = memo(({ collections, isPagination }: TableCollec
       <Column title="Description" dataIndex="description" />
       <Column
         title="Action"
-        render={(_: any, record: ArtCollectionResponse) => (
+        render={(_: any, record: CollectionResponse) => (
           <Space size="middle">
             {compareRecordWithMyCollections(record._id, myCollections) && (
               <>

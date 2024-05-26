@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import GlobalStyles from './globalStyles'
 import { Home } from '@/pages/home'
 import { Items } from '@/pages/items'
-import { Item } from '@/pages/item'
 import { Provider } from 'react-redux'
 import { store } from '@/app/store'
 import { Paths } from '@/Paths'
@@ -29,10 +28,6 @@ const router = createBrowserRouter([
   {
     path: Paths.register,
     element: <Register />,
-  },
-  {
-    path: Paths.item,
-    element: <Item />,
   },
   {
     path: Paths.editCollection,
