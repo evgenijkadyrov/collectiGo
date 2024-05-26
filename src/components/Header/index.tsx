@@ -32,7 +32,8 @@ export const Header = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn)
   const userName = useSelector<RootState, string>((state) => state.auth.user.name)
   const handleLogout = () => {
-    dispatch(logout)
+    console.log('logout')
+    dispatch(logout())
   }
 
   return (

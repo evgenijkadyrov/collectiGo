@@ -1,16 +1,15 @@
-import { Button, Form, Input, Select } from 'antd'
-import { Content, Wrapper } from './styles'
+import { Button } from 'antd'
+import { Content, StyledButton, Wrapper } from './styles'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { collectionsThunk } from '@/app/collections-reducer'
 import { useActions } from '@/hooks/useActions'
-import { LoadingSpinner } from '@components/Loader'
 import { Paths } from '@/Paths'
 import { Layout } from '@/common/Layout/Layout'
-import { ArtCollectionCreate, ArtCollectionResponse, collectionsCategory } from '@/types/interfaces'
-
-const { Item } = Form
+import { ArtCollectionCreate, ArtCollectionResponse } from '@/types/interfaces'
+import { FormCustom } from '@components/FormCollectionCustom/index.'
+import { LoadingSpinner } from '@components/Loader'
 
 export const EditCollectionPage = () => {
   const { collectionId } = useParams() as { collectionId: string }
@@ -22,8 +21,9 @@ export const EditCollectionPage = () => {
   const isLoading = useSelector<RootState, boolean>((state) => state.collections.isLoading)
   const collection = collections.find((collection) => collection._id === collectionId)
 
-  const onFinish = async (values: ArtCollectionCreate) => {
+  const handleSubmit = async (values: ArtCollectionCreate) => {
     try {
+      debugger
       await updateCollection({
         collectionId,
         collectionData: values,
@@ -38,29 +38,16 @@ export const EditCollectionPage = () => {
     <Layout>
       <Wrapper>
         <Content>
-          <Form onFinish={onFinish} initialValues={collection}>
-            <Item label="Name" name="name" rules={[{ required: true }]}>
-              <Input />
-            </Item>
-            <Item label="Category" name="category" rules={[{ required: true }]}>
-              <Select
-                style={{ width: 240 }}
-                options={collectionsCategory.map((category) => ({
-                  label: category,
-                  value: category,
-                }))}
-              />
-            </Item>
-            <Item label="Image" name="image_url" rules={[{ required: true }]}>
-              <Input />
-            </Item>
-            <Item>
-              <Button type="primary" htmlType="submit">
+          <FormCustom onSubmit={handleSubmit} initialValues={collection} editMode={true} />
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            <StyledButton>
+              <Button type="primary" key="submit" htmlType="submit" form={'myForm'}>
                 Update
               </Button>
-              {isLoading && <LoadingSpinner />}
-            </Item>
-          </Form>
+            </StyledButton>
+          )}
         </Content>
       </Wrapper>
     </Layout>

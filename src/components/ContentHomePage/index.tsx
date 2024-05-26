@@ -5,7 +5,7 @@ import { TitlePage } from '@/common/TitlePage'
 
 import { StyledContent, Wrapper } from './styles'
 import { TableCollections } from '@components/TableCollections'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useActions } from '@/hooks/useActions'
 import { collectionsThunk } from '@/app/collections-reducer'
 import { ButtonCustom } from '@components/ButtonCustom'
@@ -13,7 +13,6 @@ import { useSelector } from 'react-redux'
 import { RootState } from '@/app/store'
 import { ModalCustom } from '@components/Modal'
 import { ArtCollectionResponse } from '@/types/interfaces'
-import { sortBiggestCollections } from '@/utils/sortBiggestCollections'
 
 export const Content = () => {
   const [open, setOpen] = useState(false)
@@ -23,16 +22,12 @@ export const Content = () => {
   )
   const [search, setSearch] = useState('')
   const isLoggedIn = useSelector<RootState, boolean>((state) => state.auth.isLoggedIn)
-  const sortedBiggestCollections = useMemo(() => sortBiggestCollections(collections), [])
-  useEffect(() => {
-    fetchCollections({})
-  }, [])
 
   const handleCreateCollection = () => {
     setOpen(true)
   }
   useEffect(() => {
-    fetchCollections({ search })
+    fetchCollections(search)
   }, [search])
   const handleSearch = (value: string) => {
     setSearch(value)
@@ -48,7 +43,7 @@ export const Content = () => {
         <ModalCustom open={open} setOpen={setOpen} createItemMode={false} />
         <TableCollections collections={collections} />
         <TitleGallery firstLineText={'Biggest collections'} />
-        <TableCollections collections={sortedBiggestCollections} isPagination={false} />
+        <TableCollections collections={collections} isPagination={false} />
       </StyledContent>
     </Wrapper>
   )

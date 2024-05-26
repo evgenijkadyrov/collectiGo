@@ -6,9 +6,11 @@ import { ArtCollectionCreate, collectionsCategory } from '@/types/interfaces'
 
 interface FormCustomProps {
   onSubmit: (values: ArtCollectionCreate) => void
+  initialValues?: any
+  editMode: boolean
 }
 
-export const FormCustom = memo(({ onSubmit }: FormCustomProps) => {
+export const FormCustom = memo(({ onSubmit, initialValues, editMode }: FormCustomProps) => {
   const [form] = Form.useForm()
   const onFinish = (values: ArtCollectionCreate) => {
     onSubmit(values)
@@ -23,7 +25,7 @@ export const FormCustom = memo(({ onSubmit }: FormCustomProps) => {
       name="dynamic_form_complex"
       style={{ maxWidth: 600 }}
       autoComplete="off"
-      initialValues={{}}
+      initialValues={initialValues}
       onFinish={onFinish}
     >
       <Form.Item label="Name collection" name={'name'}>
@@ -44,27 +46,29 @@ export const FormCustom = memo(({ onSubmit }: FormCustomProps) => {
       <Form.Item label="Description" name={'description'}>
         <TextArea />
       </Form.Item>
-      <Form.List name="optionalFields">
-        {(fields, { add, remove }) => (
-          <div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
-            {fields.map((field) => (
-              <Space key={field.key}>
-                <Form.Item noStyle name={[field.name, 'name']}>
-                  <Input placeholder="enter field name" />
-                </Form.Item>
-                <CloseOutlined
-                  onClick={() => {
-                    remove(field.name)
-                  }}
-                />
-              </Space>
-            ))}
-            <Button type="dashed" onClick={() => add()} block>
-              + Add Item field
-            </Button>
-          </div>
-        )}
-      </Form.List>
+      {!editMode && (
+        <Form.List name="optionalFields">
+          {(fields, { add, remove }) => (
+            <div style={{ display: 'flex', rowGap: 16, flexDirection: 'column' }}>
+              {fields.map((field) => (
+                <Space key={field.key}>
+                  <Form.Item noStyle name={[field.name, 'name']}>
+                    <Input placeholder="enter field name" />
+                  </Form.Item>
+                  <CloseOutlined
+                    onClick={() => {
+                      remove(field.name)
+                    }}
+                  />
+                </Space>
+              ))}
+              <Button type="dashed" onClick={() => add()} block>
+                + Add Item field
+              </Button>
+            </div>
+          )}
+        </Form.List>
+      )}
     </Form>
   )
 })

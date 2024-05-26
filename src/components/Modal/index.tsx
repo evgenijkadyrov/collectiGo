@@ -62,7 +62,7 @@ export const ModalCustom = ({
       ) : createItemMode ? (
         <FormItemCustom setOpen={setOpen} collectionId={collectionId} titles={titles} />
       ) : (
-        <FormCustom onSubmit={handleSubmit} />
+        <FormCustom onSubmit={handleSubmit} editMode={false} />
       )}
     </Modal>
   )

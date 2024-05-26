@@ -79,9 +79,7 @@ const slice = createSlice({
     clearMessage: (state) => {
       state.message = ''
     },
-    logout: (state) => {
-      state.isLoggedIn = false
-    },
+    logout: () => initialState,
   },
   extraReducers: (builder: ActionReducerMapBuilder<InitialStateType>) => {
     builder

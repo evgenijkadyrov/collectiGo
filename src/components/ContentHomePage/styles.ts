@@ -7,6 +7,7 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   flex: 1;
+  padding-bottom: 20px;
 `
 export const StyledContent = styled.main`
   display: flex;
